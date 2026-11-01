@@ -14,6 +14,7 @@ export default defineConfig({
           items: [
             { slug: "handbook", label: "Handbook" },
             { slug: "conformance", label: "Conformance" },
+            { slug: "roadmap", label: "Roadmap" },
           ],
         },
         {
