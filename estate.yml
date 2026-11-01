@@ -50,9 +50,9 @@ packages:
     npm: "@est/errcode"
     version: "0.1.0"
     area: dx
-    status: support
+    status: core
     mirrors: "errcode"
-    notes: "TS mirror of the errcode crate: 10 codes, status/code/reason/typeUri maps, RFC 7807 ProblemDetail."
+    notes: "TS mirror of the errcode crate: 10 codes, status/code/reason/typeUri maps, RFC 7807 ProblemDetail. core since 2026-11-01: pinned by the deployed directory suite."
     docs:
       tier: k
       specs: ["packages/errcode/SPEC.md"]
@@ -65,9 +65,9 @@ packages:
     npm: "@est/envelope"
     version: "0.1.0"
     area: dx
-    status: support
+    status: core
     mirrors: "json-envelope"
-    notes: "TS mirror of json-envelope: ApiResponse wire shape, snake_case pagination keys, strict decode."
+    notes: "TS mirror of json-envelope: ApiResponse wire shape, snake_case pagination keys, strict decode. core since 2026-11-01: pinned by the deployed directory suite."
     docs:
       tier: k
       specs: ["packages/envelope/SPEC.md"]
@@ -80,8 +80,8 @@ packages:
     npm: "@est/search"
     version: "0.1.0"
     area: app
-    status: support
-    notes: "Client-side text search. TS implementation now; optional wasm enhancement via crates/search-wasm behind the same interface."
+    status: core
+    notes: "Client-side text search. TS implementation now; optional wasm enhancement via crates/search-wasm behind the same interface. core since 2026-11-01: pinned by the deployed directory suite."
     docs:
       tier: k
       specs: ["packages/search/SPEC.md"]
@@ -108,7 +108,7 @@ packages:
 consumers:
   directory:
     path: "apps/directory"
-    notes: "Tabworthy-style directory: the first consumer suite. Pins @est/errcode, @est/envelope, @est/search exactly."
+    notes: "Tabworthy-style directory: first consumer suite, deployed at https://web-estate-directory.pages.dev (Cloudflare Pages, project web-estate-directory). Pins @est/errcode, @est/envelope, @est/search exactly."
     pins:
       "@est/errcode": "0.1.0"
       "@est/envelope": "0.1.0"
