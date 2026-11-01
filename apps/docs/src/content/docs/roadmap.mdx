@@ -28,10 +28,15 @@ Exit: a public URL serving the prerendered directory; CI red/green on GitHub.
 
 ## Phase 1: the fetch bridge
 
-`@est/fetchkit`: TS twin of `retry-backoff` + `cachekit` semantics with
-`decodeEnvelope` at the edge; fixtures shared with the Rust crates. A suite
-performs a real round trip against an axum backend. Exit: `errcode`,
-`envelope`, `search` eligible for `core`.
+`@est/fetchkit` is shipped and fixture-pinned: backoff formula mirrored
+from `retry-backoff` (same defaults, same cap, same jitter bound), strict
+envelope decoding, status-to-errcode mapping on the wire
+(`RATE_LIMITED`, not variant names), loopback integration tests over real
+HTTP. Cache semantics are deferred to `@est/cachekit` (SC-1: one concern).
+
+Remaining for exit: a deployed suite performs a live round trip against an
+axum backend. Blocked on the Cloudflare deploy (Phase 0, auth). Exit:
+`errcode`, `envelope`, `search` eligible for `core`.
 
 ## Phase 2: state + platform services
 
