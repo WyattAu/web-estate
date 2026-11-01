@@ -38,7 +38,8 @@ import { allTags, categories, featured, SITE_COUNT } from "../lib/data";
   </div>
 
   <h2>Search</h2>
-  <SearchIsland client:idle />
+  <!-- client:only: the index is a client asset; SSR-serializing it is meaningless -->
+  <SearchIsland client:only="solid" />
 </Base>
 
 <script>

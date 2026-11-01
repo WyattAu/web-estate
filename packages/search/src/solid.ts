@@ -16,13 +16,14 @@ export type SearchStatus =
  * error path.
  */
 export function useSearchIndex(load: () => Promise<readonly SearchDoc[]>): Resource<SearchIndex> {
-  return createResource(async () => {
+  const [index] = createResource(async () => {
     const docs = await load();
-    const index = createSearchIndex();
-    for (const d of docs) index.add(d);
-    index.build();
-    return index;
-  })[0];
+    const idx = createSearchIndex();
+    for (const d of docs) idx.add(d);
+    idx.build();
+    return idx;
+  });
+  return index;
 }
 
 /** Run a query against a ready index; pure and synchronous. */
