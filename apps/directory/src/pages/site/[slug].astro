@@ -1,6 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
-import { getSite, categoryId, categoryLabel, sites } from "../../lib/data";
+import { categoryId, categoryLabel, getSite, sites } from "../../lib/data";
 
 export function getStaticPaths() {
   return sites.map((s) => ({ params: { slug: s.slug }, props: { site: s } }));

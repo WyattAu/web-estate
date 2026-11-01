@@ -3,12 +3,7 @@
 // envelopes shaped by @est/envelope.
 
 import { createResource, type Resource } from "solid-js";
-import {
-  createSearchIndex,
-  type SearchDoc,
-  type SearchHit,
-  type SearchIndex,
-} from "./index";
+import { createSearchIndex, type SearchDoc, type SearchHit, type SearchIndex } from "./index";
 
 export type SearchStatus =
   | { state: "loading" }

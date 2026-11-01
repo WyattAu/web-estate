@@ -9,11 +9,11 @@ file. This SPEC defers to that fixture as its executable oracle.
 
 ## Truth table
 
-| Concern | Truth |
-|---|---|
-| Status/code/reason/typeUri mappings | `conformance/errcode/cases.json` |
-| ProblemDetail wire shape | `conformance/errcode/cases.json` (problem cases) |
-| Public API | `src/index.ts` |
+| Concern                             | Truth                                            |
+| ----------------------------------- | ------------------------------------------------ |
+| Status/code/reason/typeUri mappings | `conformance/errcode/cases.json`                 |
+| ProblemDetail wire shape            | `conformance/errcode/cases.json` (problem cases) |
+| Public API                          | `src/index.ts`                                   |
 
 ## Requirements
 

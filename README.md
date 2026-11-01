@@ -22,10 +22,10 @@ bun run scripts/new-kit.ts my-kit dx   # scaffold a new kit
 
 ## Apps
 
-| App | Stack | Purpose |
-|---|---|---|
+| App              | Stack                 | Purpose                                             |
+| ---------------- | --------------------- | --------------------------------------------------- |
 | `apps/directory` | Astro + Solid islands | 506-site directory; first consumer pinning the kits |
-| `apps/docs` | Starlight | estate handbook and kit docs |
+| `apps/docs`      | Starlight             | estate handbook and kit docs                        |
 
 ## The compounding rules
 

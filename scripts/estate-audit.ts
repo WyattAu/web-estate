@@ -13,9 +13,9 @@
 //      npm wrapper's version equals the crate version (version-lock)
 //   7. llms.txt exists and lists every package
 
-import { parse } from "yaml";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { parse } from "yaml";
 
 const ROOT = new URL("..", import.meta.url).pathname;
 const STATUSES = new Set(["core", "support", "orphan", "dormant", "template"]);
@@ -44,7 +44,8 @@ for (const dir of existsSync(pkgDir) ? readdirSync(pkgDir) : []) {
     fail(findings, `${pj.name}: not registered in estate.yml (run scripts/new-kit.ts)`);
     continue;
   }
-  if (entry.npm !== pj.name) fail(findings, `${dir}: registry npm ${entry.npm} != package.json ${pj.name}`);
+  if (entry.npm !== pj.name)
+    fail(findings, `${dir}: registry npm ${entry.npm} != package.json ${pj.name}`);
   if (entry.version !== pj.version) {
     fail(findings, `${dir}: registry version ${entry.version} != package.json ${pj.version}`);
   }
@@ -55,16 +56,22 @@ for (const dir of existsSync(pkgDir) ? readdirSync(pkgDir) : []) {
 }
 
 for (const [name, entry] of Object.entries(registry.packages ?? {})) {
-  if (!existsSync(join(pkgDir, name))) fail(findings, `${entry.npm}: registered but packages/${name} missing`);
-  // 5: fixtures for mirror semantics
-  if (entry.mirrors && !existsSync(join(ROOT, "conformance", entry.mirrors, "cases.json"))) {
-    fail(findings, `${entry.npm}: mirrors ${entry.mirrors} but conformance/${entry.mirrors}/cases.json missing`);
+  if (!existsSync(join(pkgDir, name)))
+    fail(findings, `${entry.npm}: registered but packages/${name} missing`);
+  // 5: fixtures live under the package name (suite == package); `mirrors`
+  // documents which Rust crate shares the same wire truth.
+  if (entry.mirrors && !existsSync(join(ROOT, "conformance", name, "cases.json"))) {
+    fail(
+      findings,
+      `${entry.npm}: mirrors ${entry.mirrors} but conformance/${name}/cases.json missing`,
+    );
   }
 }
 
 // 3+4: consumer pins
 for (const [consumer, c] of Object.entries(registry.consumers ?? {})) {
-  if (!existsSync(join(ROOT, c.path))) fail(findings, `consumer ${consumer}: path ${c.path} missing`);
+  if (!existsSync(join(ROOT, c.path)))
+    fail(findings, `consumer ${consumer}: path ${c.path} missing`);
   for (const [npm, pin] of Object.entries(c.pins ?? {})) {
     const actual = pkgVersions.get(npm);
     if (actual === undefined) {
@@ -76,7 +83,9 @@ for (const [consumer, c] of Object.entries(registry.consumers ?? {})) {
 }
 for (const [name, entry] of Object.entries(registry.packages ?? {})) {
   if (entry.status !== "core") continue;
-  const pinned = Object.values(registry.consumers ?? {}).some((c) => c.pins?.[entry.npm] === entry.version);
+  const pinned = Object.values(registry.consumers ?? {}).some(
+    (c) => c.pins?.[entry.npm] === entry.version,
+  );
   if (!pinned) {
     fail(findings, `${entry.npm}: claims core but no consumer pins it exactly (core is earned)`);
   }
@@ -92,7 +101,10 @@ for (const [name, crate] of Object.entries(registry.crates ?? {})) {
   const toml = readFileSync(tomlPath, "utf8");
   const m = /^version\s*=\s*"([^"]+)"/m.exec(toml);
   if (!m || m[1] !== crate.version) {
-    fail(findings, `crate ${name}: registry version ${crate.version} != Cargo.toml ${m?.[1] ?? "missing"}`);
+    fail(
+      findings,
+      `crate ${name}: registry version ${crate.version} != Cargo.toml ${m?.[1] ?? "missing"}`,
+    );
   }
   if (crate.wrapper) {
     const w = pkgVersions.get(crate.wrapper);

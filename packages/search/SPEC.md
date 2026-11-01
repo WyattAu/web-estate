@@ -10,12 +10,12 @@ wasm side only when built.
 
 ## Truth table
 
-| Concern | Truth |
-|---|---|
-| Scoring and ordering semantics | `conformance/search/cases.json` |
-| Tokenization rule | `conformance/search/cases.json` + unit test |
-| Index ABI | `src/index.ts` (`SearchIndex`) |
-| wasm twin | `crates/search-wasm/src/lib.rs` |
+| Concern                        | Truth                                       |
+| ------------------------------ | ------------------------------------------- |
+| Scoring and ordering semantics | `conformance/search/cases.json`             |
+| Tokenization rule              | `conformance/search/cases.json` + unit test |
+| Index ABI                      | `src/index.ts` (`SearchIndex`)              |
+| wasm twin                      | `crates/search-wasm/src/lib.rs`             |
 
 ## Requirements
 
@@ -30,11 +30,11 @@ wasm side only when built.
 
 ## Scoring table (normative)
 
-| Signal | Weight |
-|---|---|
-| title equals query | 6 |
-| title starts with query | 4 |
-| title word equals query | 3 |
-| title word starts with query | 1.5 |
-| tag equals or contains query | 2 |
-| description contains query | 1 |
+| Signal                       | Weight |
+| ---------------------------- | ------ |
+| title equals query           | 6      |
+| title starts with query      | 4      |
+| title word equals query      | 3      |
+| title word starts with query | 1.5    |
+| tag equals or contains query | 2      |
+| description contains query   | 1      |

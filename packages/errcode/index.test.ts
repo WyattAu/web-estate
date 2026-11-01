@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import cases from "../../conformance/errcode/cases.json";
-import { display, errcode, ERROR_CODE_NAMES, makeProblem } from "./src/index";
+import { display, ERROR_CODE_NAMES, errcode, makeProblem } from "./src/index";
 
 type Case =
   | { kind: "code"; variant: string; status: number; code: string; reason: string; typeUri: string }
@@ -46,9 +46,7 @@ describe("conformance: errcode", () => {
   }
 
   test("fixture covers all 10 variants", () => {
-    const covered = new Set(
-      suite.cases.filter((c) => c.kind === "code").map((c) => c.variant),
-    );
+    const covered = new Set(suite.cases.filter((c) => c.kind === "code").map((c) => c.variant));
     expect([...covered].sort()).toEqual([...ERROR_CODE_NAMES].sort());
   });
 });

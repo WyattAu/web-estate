@@ -4,16 +4,12 @@
 //   @est/errcode -> error taxonomy for index-load failure (UNAVAILABLE)
 //   @est/envelope-> result pages wrapped in the ApiResponse pagination shape
 
-import { For, Match, Show, Switch, createMemo, createSignal } from "solid-js";
-import { queryIndex, useSearchIndex } from "@est/search/solid";
-import type { SearchDoc } from "@est/search";
+import { decodeEnvelope, envelopePaginated, type PaginationMeta } from "@est/envelope";
 import { errcode } from "@est/errcode";
-import {
-  decodeEnvelope,
-  envelopePaginated,
-  type PaginationMeta,
-} from "@est/envelope";
-import { sites, type SiteRecord } from "../lib/data";
+import type { SearchDoc } from "@est/search";
+import { queryIndex, useSearchIndex } from "@est/search/solid";
+import { createMemo, createSignal, For, Match, Show, Switch } from "solid-js";
+import { type SiteRecord, sites } from "../lib/data";
 
 const PER_PAGE = 12;
 
@@ -62,7 +58,7 @@ export default function SearchIsland() {
     return decoded.ok ? decoded.envelope : undefined;
   });
 
-  const pagination = (): PaginationMeta | undefined => pageEnvelope()?.pagination;
+  const pag = createMemo(() => pageEnvelope()?.pagination);
 
   return (
     <div>
@@ -99,24 +95,24 @@ export default function SearchIsland() {
           {(env) => (
             <>
               <p class="muted" style={{ margin: "0.6rem 0 0.4rem" }}>
-                {pagination()?.total ?? 0} result(s)
-                {pagination() && pagination()!.total_pages > 1
-                  ? ` | page ${pagination()!.page} of ${pagination()!.total_pages}`
+                {pag()?.total ?? 0} result(s)
+                {(pag()?.total_pages ?? 1) > 1
+                  ? ` | page ${pag()?.page} of ${pag()?.total_pages}`
                   : ""}
               </p>
               <div class="grid">
                 <For each={env.data ?? []}>{(s) => <SiteCard site={s} />}</For>
               </div>
-              <Show when={(pagination()?.total_pages ?? 1) > 1}>
+              <Show when={(pag()?.total_pages ?? 1) > 1}>
                 <nav
                   style={{ display: "flex", gap: "0.5rem", "margin-top": "0.8rem" }}
                   aria-label="Search result pages"
                 >
-                  <button disabled={pagination()!.page <= 1} onClick={() => setPage((p) => p - 1)}>
+                  <button disabled={(pag()?.page ?? 1) <= 1} onClick={() => setPage((p) => p - 1)}>
                     &larr; prev
                   </button>
                   <button
-                    disabled={pagination()!.page >= pagination()!.total_pages}
+                    disabled={(pag()?.page ?? 1) >= (pag()?.total_pages ?? 1)}
                     onClick={() => setPage((p) => p + 1)}
                   >
                     next &rarr;

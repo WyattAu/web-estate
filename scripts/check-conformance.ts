@@ -3,7 +3,7 @@
 // identities. Language tests consume the same files; this guards the
 // shared truth itself.
 
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const ROOT = new URL("..", import.meta.url).pathname;

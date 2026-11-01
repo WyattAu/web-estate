@@ -1,6 +1,6 @@
-import { defineConfig } from "astro/config";
-import solid from "@astrojs/solid-js";
 import sitemap from "@astrojs/sitemap";
+import solid from "@astrojs/solid-js";
+import { defineConfig } from "astro/config";
 
 // Static-first: every entity page is prerendered HTML with JSON-LD and a
 // sitemap entry, the shape proven by tabworthy.pages.dev. Interactivity is

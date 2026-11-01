@@ -9,10 +9,10 @@ fixture file. The fixture is this SPEC's executable oracle.
 
 ## Truth table
 
-| Concern | Truth |
-|---|---|
+| Concern                                | Truth                             |
+| -------------------------------------- | --------------------------------- |
 | Envelope wire shape, decode strictness | `conformance/envelope/cases.json` |
-| Public API | `src/index.ts` |
+| Public API                             | `src/index.ts`                    |
 
 ## Requirements
 

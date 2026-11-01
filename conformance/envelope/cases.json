@@ -20,16 +20,30 @@
     {
       "kind": "decode",
       "name": "paginated response",
-      "input": { "success": true, "data": [{ "slug": "townscaper" }], "pagination": { "page": 2, "per_page": 50, "total": 506, "total_pages": 11 } },
+      "input": {
+        "success": true,
+        "data": [{ "slug": "townscaper" }],
+        "pagination": { "page": 2, "per_page": 50, "total": 506, "total_pages": 11 }
+      },
       "expect": "ok",
-      "expected": { "success": true, "data": [{ "slug": "townscaper" }], "pagination": { "page": 2, "per_page": 50, "total": 506, "total_pages": 11 } }
+      "expected": {
+        "success": true,
+        "data": [{ "slug": "townscaper" }],
+        "pagination": { "page": 2, "per_page": 50, "total": 506, "total_pages": 11 }
+      }
     },
     {
       "kind": "decode",
       "name": "error response",
-      "input": { "success": false, "error": { "code": "NOT_FOUND", "message": "no such site", "details": { "slug": "nope" } } },
+      "input": {
+        "success": false,
+        "error": { "code": "NOT_FOUND", "message": "no such site", "details": { "slug": "nope" } }
+      },
       "expect": "ok",
-      "expected": { "success": false, "error": { "code": "NOT_FOUND", "message": "no such site", "details": { "slug": "nope" } } }
+      "expected": {
+        "success": false,
+        "error": { "code": "NOT_FOUND", "message": "no such site", "details": { "slug": "nope" } }
+      }
     },
     {
       "kind": "decode",
@@ -65,7 +79,11 @@
     {
       "kind": "decode",
       "name": "camelCase pagination key is rejected on the wire",
-      "input": { "success": true, "data": [], "pagination": { "page": 1, "perPage": 50, "total": 0, "totalPages": 0 } },
+      "input": {
+        "success": true,
+        "data": [],
+        "pagination": { "page": 1, "perPage": 50, "total": 0, "totalPages": 0 }
+      },
       "expect": "reject"
     },
     {

@@ -7,7 +7,7 @@
 // area: one of the estate areas (dx, app, ui, data, ...). mirror-crate:
 // optional Rust crate name whose wire semantics this kit shares.
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const ROOT = new URL("..", import.meta.url).pathname;

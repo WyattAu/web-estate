@@ -1,0 +1,18 @@
+> WyattAu web-estate: TS + SolidJS + Astro + Starlight kits under Bun,
+> with optional custom wasm. Registry of record: estate.yml.
+
+## Kits
+
+- [@est/errcode](packages/errcode/SPEC.md): TS mirror of the errcode crate: 10 codes, status/code/reason/typeUri maps, RFC 7807 ProblemDetail. (v0.1.0, support, mirrors errcode)
+- [@est/envelope](packages/envelope/SPEC.md): TS mirror of json-envelope: ApiResponse wire shape, snake_case pagination keys, strict decode. (v0.1.0, support, mirrors json-envelope)
+- [@est/search](packages/search/SPEC.md): Client-side text search. TS implementation now; optional wasm enhancement via crates/search-wasm behind the same interface. (v0.1.0, support)
+
+## Consumers
+
+- directory: apps/directory
+
+## Crates (wasm)
+
+- search-wasm: crates/search-wasm
+
+Read AGENTS.md for the repo contract.

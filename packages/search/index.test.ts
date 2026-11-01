@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import cases from "../../conformance/search/cases.json";
-import { indexDocs, tokenize, type SearchDoc } from "./src/index";
+import { createSearchIndex, indexDocs, type SearchDoc, tokenize } from "./src/index";
 
 type Case = { kind: "query"; query: string; limit: number; expected: string[] };
 const suite = cases as { suite: string; docs: SearchDoc[]; cases: Case[] };
@@ -29,7 +29,8 @@ describe("conformance: search", () => {
   });
 
   test("duplicate ids are rejected", () => {
-    const idx = indexDocs([{ id: "a", title: "A" }]);
+    const idx = createSearchIndex();
+    idx.add({ id: "a", title: "A" });
     expect(() => idx.add({ id: "a", title: "A2" })).toThrow(/duplicate id/);
   });
 

@@ -35,19 +35,67 @@ export interface ErrorCodeDef {
  * The exact mapping table from the Rust crate. Fixtures verify every cell;
  * edits here must regenerate the fixture or fail conformance.
  */
-export const ERROR_CODES: Readonly<
-  Record<ErrorCodeName, ErrorCodeDef>
-> = {
-  NotFound: { status: 404, code: "NOT_FOUND", reason: "Not Found", typeUri: "https://httpstatuses.com/404" },
-  Conflict: { status: 409, code: "CONFLICT", reason: "Conflict", typeUri: "https://httpstatuses.com/409" },
-  Validation: { status: 422, code: "VALIDATION", reason: "Validation Error", typeUri: "https://httpstatuses.com/422" },
-  Auth: { status: 401, code: "AUTH", reason: "Unauthorized", typeUri: "https://httpstatuses.com/401" },
-  Unauthorized: { status: 401, code: "UNAUTHORIZED", reason: "Unauthorized", typeUri: "https://httpstatuses.com/401" },
-  Forbidden: { status: 403, code: "FORBIDDEN", reason: "Forbidden", typeUri: "https://httpstatuses.com/403" },
-  Internal: { status: 500, code: "INTERNAL", reason: "Internal Server Error", typeUri: "https://httpstatuses.com/500" },
-  RateLimited: { status: 429, code: "RATE_LIMITED", reason: "Too Many Requests", typeUri: "https://httpstatuses.com/429" },
-  BadRequest: { status: 400, code: "BAD_REQUEST", reason: "Bad Request", typeUri: "https://httpstatuses.com/400" },
-  Unavailable: { status: 503, code: "UNAVAILABLE", reason: "Service Unavailable", typeUri: "https://httpstatuses.com/503" },
+export const ERROR_CODES: Readonly<Record<ErrorCodeName, ErrorCodeDef>> = {
+  NotFound: {
+    status: 404,
+    code: "NOT_FOUND",
+    reason: "Not Found",
+    typeUri: "https://httpstatuses.com/404",
+  },
+  Conflict: {
+    status: 409,
+    code: "CONFLICT",
+    reason: "Conflict",
+    typeUri: "https://httpstatuses.com/409",
+  },
+  Validation: {
+    status: 422,
+    code: "VALIDATION",
+    reason: "Validation Error",
+    typeUri: "https://httpstatuses.com/422",
+  },
+  Auth: {
+    status: 401,
+    code: "AUTH",
+    reason: "Unauthorized",
+    typeUri: "https://httpstatuses.com/401",
+  },
+  Unauthorized: {
+    status: 401,
+    code: "UNAUTHORIZED",
+    reason: "Unauthorized",
+    typeUri: "https://httpstatuses.com/401",
+  },
+  Forbidden: {
+    status: 403,
+    code: "FORBIDDEN",
+    reason: "Forbidden",
+    typeUri: "https://httpstatuses.com/403",
+  },
+  Internal: {
+    status: 500,
+    code: "INTERNAL",
+    reason: "Internal Server Error",
+    typeUri: "https://httpstatuses.com/500",
+  },
+  RateLimited: {
+    status: 429,
+    code: "RATE_LIMITED",
+    reason: "Too Many Requests",
+    typeUri: "https://httpstatuses.com/429",
+  },
+  BadRequest: {
+    status: 400,
+    code: "BAD_REQUEST",
+    reason: "Bad Request",
+    typeUri: "https://httpstatuses.com/400",
+  },
+  Unavailable: {
+    status: 503,
+    code: "UNAVAILABLE",
+    reason: "Service Unavailable",
+    typeUri: "https://httpstatuses.com/503",
+  },
 };
 
 /** Look up a code definition by variant name. */

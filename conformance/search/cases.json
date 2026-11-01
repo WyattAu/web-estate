@@ -3,11 +3,36 @@
   "wire": 1,
   "source_of_truth": "packages/search/src/index.ts scoring table; crates/search-wasm must match",
   "docs": [
-    { "id": "townscaper", "title": "Townscaper", "tags": ["game", "relaxing", "3d"], "description": "An experimental city building game where you create stunning seaside towns block by block." },
-    { "id": "little-alchemy", "title": "Little Alchemy 2", "tags": ["game", "puzzle"], "description": "Start with air, earth, fire and water and combine them into hundreds of things." },
-    { "id": "slow-roads", "title": "Slow Roads", "tags": ["game", "relaxing", "driving"], "description": "Drive an endless, procedurally generated road through forests, deserts and coastlines." },
-    { "id": "orb-farm", "title": "Orb.Farm", "tags": ["toy", "ecosystem"], "description": "A virtual ecosystem where different species of creature can live, grow and die as part of a self-contained food chain." },
-    { "id": "cityrt", "title": "CityRT", "tags": ["game", "city-builder"], "description": "A city builder with roads, districts, schools, hospitals, and a city budget." }
+    {
+      "id": "townscaper",
+      "title": "Townscaper",
+      "tags": ["game", "relaxing", "3d"],
+      "description": "An experimental city building game where you create stunning seaside towns block by block."
+    },
+    {
+      "id": "little-alchemy",
+      "title": "Little Alchemy 2",
+      "tags": ["game", "puzzle"],
+      "description": "Start with air, earth, fire and water and combine them into hundreds of things."
+    },
+    {
+      "id": "slow-roads",
+      "title": "Slow Roads",
+      "tags": ["game", "relaxing", "driving"],
+      "description": "Drive an endless, procedurally generated road through forests, deserts and coastlines."
+    },
+    {
+      "id": "orb-farm",
+      "title": "Orb.Farm",
+      "tags": ["toy", "ecosystem"],
+      "description": "A virtual ecosystem where different species of creature can live, grow and die as part of a self-contained food chain."
+    },
+    {
+      "id": "cityrt",
+      "title": "CityRT",
+      "tags": ["game", "city-builder"],
+      "description": "A city builder with roads, districts, schools, hospitals, and a city budget."
+    }
   ],
   "cases": [
     { "kind": "query", "query": "townscaper", "limit": 5, "expected": ["townscaper"] },

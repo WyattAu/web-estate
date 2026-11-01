@@ -3,20 +3,120 @@
   "wire": 1,
   "source_of_truth": "WyattAu/errcode src/error.rs (status/as_str/reason/type_uri)",
   "cases": [
-    { "kind": "code", "variant": "NotFound", "status": 404, "code": "NOT_FOUND", "reason": "Not Found", "typeUri": "https://httpstatuses.com/404" },
-    { "kind": "code", "variant": "Conflict", "status": 409, "code": "CONFLICT", "reason": "Conflict", "typeUri": "https://httpstatuses.com/409" },
-    { "kind": "code", "variant": "Validation", "status": 422, "code": "VALIDATION", "reason": "Validation Error", "typeUri": "https://httpstatuses.com/422" },
-    { "kind": "code", "variant": "Auth", "status": 401, "code": "AUTH", "reason": "Unauthorized", "typeUri": "https://httpstatuses.com/401" },
-    { "kind": "code", "variant": "Unauthorized", "status": 401, "code": "UNAUTHORIZED", "reason": "Unauthorized", "typeUri": "https://httpstatuses.com/401" },
-    { "kind": "code", "variant": "Forbidden", "status": 403, "code": "FORBIDDEN", "reason": "Forbidden", "typeUri": "https://httpstatuses.com/403" },
-    { "kind": "code", "variant": "Internal", "status": 500, "code": "INTERNAL", "reason": "Internal Server Error", "typeUri": "https://httpstatuses.com/500" },
-    { "kind": "code", "variant": "RateLimited", "status": 429, "code": "RATE_LIMITED", "reason": "Too Many Requests", "typeUri": "https://httpstatuses.com/429" },
-    { "kind": "code", "variant": "BadRequest", "status": 400, "code": "BAD_REQUEST", "reason": "Bad Request", "typeUri": "https://httpstatuses.com/400" },
-    { "kind": "code", "variant": "Unavailable", "status": 503, "code": "UNAVAILABLE", "reason": "Service Unavailable", "typeUri": "https://httpstatuses.com/503" },
+    {
+      "kind": "code",
+      "variant": "NotFound",
+      "status": 404,
+      "code": "NOT_FOUND",
+      "reason": "Not Found",
+      "typeUri": "https://httpstatuses.com/404"
+    },
+    {
+      "kind": "code",
+      "variant": "Conflict",
+      "status": 409,
+      "code": "CONFLICT",
+      "reason": "Conflict",
+      "typeUri": "https://httpstatuses.com/409"
+    },
+    {
+      "kind": "code",
+      "variant": "Validation",
+      "status": 422,
+      "code": "VALIDATION",
+      "reason": "Validation Error",
+      "typeUri": "https://httpstatuses.com/422"
+    },
+    {
+      "kind": "code",
+      "variant": "Auth",
+      "status": 401,
+      "code": "AUTH",
+      "reason": "Unauthorized",
+      "typeUri": "https://httpstatuses.com/401"
+    },
+    {
+      "kind": "code",
+      "variant": "Unauthorized",
+      "status": 401,
+      "code": "UNAUTHORIZED",
+      "reason": "Unauthorized",
+      "typeUri": "https://httpstatuses.com/401"
+    },
+    {
+      "kind": "code",
+      "variant": "Forbidden",
+      "status": 403,
+      "code": "FORBIDDEN",
+      "reason": "Forbidden",
+      "typeUri": "https://httpstatuses.com/403"
+    },
+    {
+      "kind": "code",
+      "variant": "Internal",
+      "status": 500,
+      "code": "INTERNAL",
+      "reason": "Internal Server Error",
+      "typeUri": "https://httpstatuses.com/500"
+    },
+    {
+      "kind": "code",
+      "variant": "RateLimited",
+      "status": 429,
+      "code": "RATE_LIMITED",
+      "reason": "Too Many Requests",
+      "typeUri": "https://httpstatuses.com/429"
+    },
+    {
+      "kind": "code",
+      "variant": "BadRequest",
+      "status": 400,
+      "code": "BAD_REQUEST",
+      "reason": "Bad Request",
+      "typeUri": "https://httpstatuses.com/400"
+    },
+    {
+      "kind": "code",
+      "variant": "Unavailable",
+      "status": 503,
+      "code": "UNAVAILABLE",
+      "reason": "Service Unavailable",
+      "typeUri": "https://httpstatuses.com/503"
+    },
     { "kind": "display", "variant": "NotFound", "expected": "Not Found (404)" },
     { "kind": "display", "variant": "Validation", "expected": "Validation Error (422)" },
-    { "kind": "problem", "variant": "NotFound", "detail": "User 42 does not exist", "instance": "/users/42", "expected": { "type": "https://httpstatuses.com/404", "title": "Not Found", "status": 404, "detail": "User 42 does not exist", "instance": "/users/42" } },
-    { "kind": "problem", "variant": "Validation", "detail": "name is required", "expected": { "type": "https://httpstatuses.com/422", "title": "Validation Error", "status": 422, "detail": "name is required" } },
-    { "kind": "problem", "variant": "Internal", "expected": { "type": "https://httpstatuses.com/500", "title": "Internal Server Error", "status": 500 } }
+    {
+      "kind": "problem",
+      "variant": "NotFound",
+      "detail": "User 42 does not exist",
+      "instance": "/users/42",
+      "expected": {
+        "type": "https://httpstatuses.com/404",
+        "title": "Not Found",
+        "status": 404,
+        "detail": "User 42 does not exist",
+        "instance": "/users/42"
+      }
+    },
+    {
+      "kind": "problem",
+      "variant": "Validation",
+      "detail": "name is required",
+      "expected": {
+        "type": "https://httpstatuses.com/422",
+        "title": "Validation Error",
+        "status": 422,
+        "detail": "name is required"
+      }
+    },
+    {
+      "kind": "problem",
+      "variant": "Internal",
+      "expected": {
+        "type": "https://httpstatuses.com/500",
+        "title": "Internal Server Error",
+        "status": 500
+      }
+    }
   ]
 }

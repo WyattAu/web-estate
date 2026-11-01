@@ -1,11 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import cases from "../../conformance/envelope/cases.json";
-import {
-  decodeEnvelope,
-  envelopeError,
-  envelopePaginated,
-  envelopeSuccess,
-} from "./src/index";
+import { decodeEnvelope, envelopeError, envelopePaginated, envelopeSuccess } from "./src/index";
 
 type DecodeCase = {
   kind: "decode";
