@@ -1,0 +1,70 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getSite, categoryId, categoryLabel, sites } from "../../lib/data";
+
+export function getStaticPaths() {
+  return sites.map((s) => ({ params: { slug: s.slug }, props: { site: s } }));
+}
+
+const { site } = Astro.props;
+const catId = categoryId(site);
+const cat = categoryLabel(catId);
+const related = (site.related ?? []).map((slug) => getSite(slug)).filter(Boolean);
+
+const ld = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: site.name,
+  description: site.description,
+  url: new URL(Astro.url.pathname, Astro.site),
+  about: cat,
+  mainEntity: {
+    "@type": "WebSite",
+    name: site.name,
+    url: site.url,
+  },
+};
+---
+
+<Base title={`${site.name}: ${cat} | estate directory`} description={site.description ?? undefined}>
+  <p class="muted"><a href={`/category/${catId}/`}>{cat}</a> / {site.name}</p>
+  <h1>{site.name}</h1>
+  <p>{site.description}</p>
+  <p>
+    <a class="visit" href={site.url} rel="noopener noreferrer" target="_blank">
+      Visit {site.domain}
+    </a>
+    <span class="chip">{site.price ?? "Free"}</span>
+    {site.tags.map((t) => <span class="chip">#{t}</span>)}
+  </p>
+
+  {related.length > 0 && (
+    <section>
+      <h2>Websites like {site.name}</h2>
+      <div class="grid">
+        {related.map((r) => (
+          <a class="card" href={`/site/${r!.slug}/`} style="text-decoration:none;color:inherit">
+            <h3>{r!.name}</h3>
+            <p>{r!.description?.slice(0, 110)}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+</Base>
+
+<style>
+  .visit {
+    display: inline-block;
+    margin-right: 0.8rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 8px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  section { margin-top: 2rem; }
+</style>

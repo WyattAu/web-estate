@@ -1,0 +1,34 @@
+# web-estate CI: mirrors the Makefile verbs; no CI-only steps.
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install --frozen-lockfile
+      - run: make ci
+
+  wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: crates/search-wasm
+      - run: cargo test
+        working-directory: crates/search-wasm
+      # Artifact build; the TS side works without it (fallback twin).
+      - run: cargo install wasm-pack --locked || true
+      - run: wasm-pack build --target web --out-dir pkg --release
+        working-directory: crates/search-wasm

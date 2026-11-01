@@ -1,0 +1,26 @@
+{
+  "name": "web-estate",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "bun run --filter '*' build",
+    "test": "bun test",
+    "lint": "biome check .",
+    "fmt": "biome check --write .",
+    "fmt-check": "biome check .",
+    "coverage": "bun test --coverage",
+    "contract": "bun run scripts/estate-audit.ts && bun run scripts/check-conformance.ts",
+    "docs:llms": "bun run scripts/llms-txt.ts",
+    "ci": "bun run build && bun run test && bun run lint && bun run fmt-check && bun run coverage && bun run contract"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.0",
+    "@types/bun": "^1.2.0",
+    "yaml": "^2.8.0"
+  }
+}

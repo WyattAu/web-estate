@@ -1,0 +1,18 @@
+---
+title: "@est/search"
+description: Client-side scored text search with an optional wasm twin.
+---
+
+Client-side scored search over hundreds to low thousands of documents. The
+TS implementation is the reference; `crates/search-wasm` is the optional
+wasm twin behind the same `SearchIndex` ABI. Normative source:
+`conformance/search/cases.json`; scoring table in
+`packages/search/SPEC.md`.
+
+```ts
+import { indexDocs } from "@est/search";
+import { useSearchIndex, queryIndex } from "@est/search/solid";
+
+const index = indexDocs(corpus);
+index.search("town", 10); // [{ id: "townscaper", score: ... }, ...]
+```

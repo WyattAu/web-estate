@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+coverage/
+target/
+crates/*/pkg/
+*.tsbuildinfo
+.DS_Store

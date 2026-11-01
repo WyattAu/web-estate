@@ -1,0 +1,46 @@
+---
+import Base from "../layouts/Base.astro";
+import SearchIsland from "../components/SearchIsland";
+import { SITE_COUNT, categories, allTags, featured } from "../lib/data";
+---
+
+<Base title="estate directory: 506 sites worth knowing">
+  <h1>506 sites worth knowing</h1>
+  <p class="muted">
+    Hand-checked directory rebuilt as the first consumer suite of web-estate:
+    prerendered entity pages, Solid search island, kits pinned exactly.
+  </p>
+  <div class="stats">
+    <span><b>{SITE_COUNT}</b> sites</span>
+    <span><b>{categories.length}</b> categories</span>
+    <span><b>{allTags.length}+</b> tags</span>
+  </div>
+
+  <h2>Browse by category</h2>
+  <div class="grid">
+    {categories.map((c) => (
+      <a class="card" href={`/category/${c.id}/`} style="text-decoration:none;color:inherit">
+        <h3>{c.label}</h3>
+        <p>{c.count} sites</p>
+      </a>
+    ))}
+  </div>
+
+  <h2>Most cross-linked</h2>
+  <div class="grid">
+    {featured.map((s) => (
+      <a class="card" href={`/site/${s.slug}/`} style="text-decoration:none;color:inherit">
+        <h3>{s.name}</h3>
+        <p>{s.description?.slice(0, 110)}</p>
+        <p>{s.domain}</p>
+      </a>
+    ))}
+  </div>
+
+  <h2>Search</h2>
+  <SearchIsland client:idle />
+</Base>
+
+<script>
+  // Island mounted via the client:idle directive above; no manual mount.
+</script>

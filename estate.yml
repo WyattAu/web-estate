@@ -1,0 +1,92 @@
+# web-estate registry: the record of record for the TS/SolidJS/Astro workspace.
+#
+# One entry per npm package and per wasm crate. `scripts/estate-audit.ts`
+# verifies this file against packages/*/package.json, the crates'
+# Cargo.toml versions, and the pins held by consumer apps, and fails when
+# they disagree. Run it after any version bump, rename, or pin change.
+#
+# ## status
+#
+# | status  | meaning |
+# |---------|---------|
+# | core    | published and dogfooded: a consumer app pins it exactly |
+# | support | published and active, not yet composed by an app |
+# | orphan  | published but neither composed nor recently active |
+# | dormant | superseded or shelved |
+# | template| scaffolding whose purpose is to seed other packages |
+#
+# `core` is earned, not aspirational: the audit fails if a package claims
+# core without an exact consumer pin.
+#
+# ## parity
+#
+# `mirrors` names the Rust crate whose wire semantics this package shares.
+# Both sides must pass the golden fixtures in conformance/<suite>/cases.json.
+# A normative wire rule without a fixture is draft material.
+
+schema: 1
+kind: web-estate
+updated: "2026-11-01"
+owner: WyattAu
+npm_scope: "@est"
+
+packages:
+  errcode:
+    npm: "@est/errcode"
+    version: "0.1.0"
+    area: dx
+    status: support
+    mirrors: "errcode"
+    notes: "TS mirror of the errcode crate: 10 codes, status/code/reason/typeUri maps, RFC 7807 ProblemDetail."
+    docs:
+      tier: k
+      specs: ["packages/errcode/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: "2026-11-01"
+
+  envelope:
+    npm: "@est/envelope"
+    version: "0.1.0"
+    area: dx
+    status: support
+    mirrors: "json-envelope"
+    notes: "TS mirror of json-envelope: ApiResponse wire shape, snake_case pagination keys, strict decode."
+    docs:
+      tier: k
+      specs: ["packages/envelope/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: "2026-11-01"
+
+  search:
+    npm: "@est/search"
+    version: "0.1.0"
+    area: app
+    status: support
+    notes: "Client-side text search. TS implementation now; optional wasm enhancement via crates/search-wasm behind the same interface."
+    docs:
+      tier: k
+      specs: ["packages/search/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: "2026-11-01"
+
+consumers:
+  directory:
+    path: "apps/directory"
+    notes: "Tabworthy-style directory: the first consumer suite. Pins @est/errcode, @est/envelope, @est/search exactly."
+    pins:
+      "@est/errcode": "0.1.0"
+      "@est/envelope": "0.1.0"
+      "@est/search": "0.1.0"
+
+crates:
+  search-wasm:
+    path: "crates/search-wasm"
+    version: "0.1.0"
+    notes: "wasm-bindgen port of the search index ABI. Optional at runtime; @est/search falls back to TS."
+    wrapper: null

@@ -1,0 +1,17 @@
+---
+title: "@est/errcode"
+description: The 10-variant error code table and RFC 7807 problems, mirroring the errcode crate.
+---
+
+The TS mirror of the `errcode` crate. Normative source:
+`conformance/errcode/cases.json`; the Rust crate passes the same fixture.
+See `packages/errcode/SPEC.md` for REQ anchors and oracles.
+
+```ts
+import { errcode, makeProblem, display } from "@est/errcode";
+
+errcode("NotFound").status; // 404
+display("NotFound"); // "Not Found (404)"
+makeProblem("Validation", { detail: "name is required" });
+// { type: "https://httpstatuses.com/422", title: "Validation Error", status: 422, detail: "..." }
+```

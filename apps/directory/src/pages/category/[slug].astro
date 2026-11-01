@@ -1,0 +1,27 @@
+---
+import Base from "../../layouts/Base.astro";
+import { categories, categoryLabel, sitesInCategory } from "../../lib/data";
+
+export function getStaticPaths() {
+  return categories.map((c) => ({ params: { slug: c.id }, props: { id: c.id } }));
+}
+
+const { id } = Astro.props;
+const label = categoryLabel(id);
+const list = sitesInCategory(id);
+---
+
+<Base title={`${label}: ${list.length} sites | estate directory`}>
+  <p class="muted"><a href="/">home</a> / {label}</p>
+  <h1>{label}</h1>
+  <p class="muted">{list.length} sites</p>
+  <div class="grid">
+    {list.map((s) => (
+      <a class="card" href={`/site/${s.slug}/`} style="text-decoration:none;color:inherit">
+        <h3>{s.name}</h3>
+        <p>{s.description?.slice(0, 110)}</p>
+        <p>{s.domain}</p>
+      </a>
+    ))}
+  </div>
+</Base>

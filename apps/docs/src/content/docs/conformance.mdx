@@ -1,0 +1,17 @@
+---
+title: Conformance
+description: How golden fixtures are shared between TS and Rust.
+---
+
+Fixtures live in `conformance/<suite>/cases.json` and are the executable
+oracle for every wire rule. `scripts/check-conformance.ts` guards the files
+themselves; language tests consume them directly:
+
+- Bun: `packages/errcode/index.test.ts` imports the JSON and asserts each
+  case.
+- Rust: `crates/search-wasm` uses `include_str!` on the same file for its
+  `cargo test`.
+
+A normative wire statement without a fixture is draft material and does not
+ship. When the Rust crate and the TS kit disagree, the fixture is wrong or
+one implementation is wrong; fix the fixture first, then both sides.

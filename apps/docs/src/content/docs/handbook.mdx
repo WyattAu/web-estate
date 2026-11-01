@@ -1,0 +1,40 @@
+---
+title: Handbook
+description: The estate contract for the web workspace.
+---
+
+The contract lives in the repo root: `AGENTS.md` is the single source, and
+`estate.yml` is the registry of record. This page is the tour.
+
+## The four compounding rules
+
+1. **Everything arrives by script.** `bun run scripts/new-kit.ts name area`
+   scaffolds a package with SPEC, tests, tsconfig, and a registry entry.
+   Nothing depends on remembering steps.
+2. **Wire truth is written once.** Fixtures in `conformance/` are consumed
+   by Bun tests and Rust `cargo test` alike; both languages must pass the
+   same file. Where a kit mirrors a Rust crate (`mirrors:` in estate.yml),
+   the wire shapes are named after the Rust side.
+3. **Status is earned.** `core` means a consumer app pins the package at an
+   exact version; `scripts/estate-audit.ts` fails a package that claims
+   core without the pin. Drifting pins fail the same audit.
+4. **wasm is optional behind a twin.** Rust never touches the DOM; Solid
+   owns rendering. Every wasm crate implements the ABI of a TS reference
+   implementation and passes the same fixtures, so shipping without the
+   wasm binary is always safe.
+
+## The verbs
+
+`build test lint fmt fmt-check coverage contract ci`: Makefile aliases of
+package.json scripts. CI runs `make ci` and nothing else; there are no
+CI-only steps.
+
+## Stack
+
+| Layer | Choice | Why |
+|---|---|---|
+| Runtime/tooling | Bun | workspaces, test runner, scripts |
+| UI runtime | SolidJS | signals-first, islands-friendly |
+| App framework | Astro | prerendered entity pages, islands only where interactive |
+| Docs | Starlight | estate handbook and kit reference |
+| Pure logic | Rust to wasm | money math, search, CRDTs; never the DOM |

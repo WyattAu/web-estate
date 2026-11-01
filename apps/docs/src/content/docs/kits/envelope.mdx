@@ -1,0 +1,16 @@
+---
+title: "@est/envelope"
+description: The ApiResponse wire shape, mirroring the json-envelope crate.
+---
+
+The TS mirror of the `json-envelope` crate: `ApiResponse`, `ApiError`,
+`PaginationMeta` with snake_case wire keys (`per_page`, `total_pages`).
+Normative source: `conformance/envelope/cases.json`.
+
+```ts
+import { decodeEnvelope, envelopePaginated, envelopeError } from "@est/envelope";
+
+envelopePaginated(hits, { page: 2, per_page: 50, total: 506, total_pages: 11 });
+decodeEnvelope(payload); // strict: rejects camelCase keys, success:true with error, ...
+envelopeError("RATE_LIMITED", "slow down"); // { success: false, error: { code: "RATE_LIMITED", ... } }
+```
