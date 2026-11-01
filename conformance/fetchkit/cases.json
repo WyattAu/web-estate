@@ -1,0 +1,54 @@
+{
+  "suite": "fetchkit",
+  "wire": 1,
+  "source_of_truth": "WyattAu/retry-backoff src/config.rs (delay_for_attempt formula and defaults); status classification added by fetchkit, normative here",
+  "defaults": {
+    "max_retries": 3,
+    "initial_delay_ms": 100,
+    "max_delay_ms": 5000,
+    "backoff_multiplier": 2.0,
+    "jitter": true
+  },
+  "cases": [
+    { "kind": "delay", "attempt": 0, "expected_ms": 100 },
+    { "kind": "delay", "attempt": 1, "expected_ms": 200 },
+    { "kind": "delay", "attempt": 2, "expected_ms": 400 },
+    { "kind": "delay", "attempt": 3, "expected_ms": 800 },
+    { "kind": "delay", "attempt": 10, "expected_ms": 5000 },
+    { "kind": "status", "status": 429, "retryable": true, "errcode": "RATE_LIMITED" },
+    { "kind": "status", "status": 500, "retryable": true, "errcode": "INTERNAL" },
+    { "kind": "status", "status": 502, "retryable": true, "errcode": "INTERNAL" },
+    { "kind": "status", "status": 503, "retryable": true, "errcode": "UNAVAILABLE" },
+    { "kind": "status", "status": 400, "retryable": false, "errcode": "BAD_REQUEST" },
+    { "kind": "status", "status": 401, "retryable": false, "errcode": "UNAUTHORIZED" },
+    { "kind": "status", "status": 403, "retryable": false, "errcode": "FORBIDDEN" },
+    { "kind": "status", "status": 404, "retryable": false, "errcode": "NOT_FOUND" },
+    { "kind": "status", "status": 409, "retryable": false, "errcode": "CONFLICT" },
+    { "kind": "status", "status": 422, "retryable": false, "errcode": "VALIDATION" },
+    {
+      "kind": "flow",
+      "name": "succeeds after one retryable failure",
+      "script": [500, 200],
+      "attempts": 2
+    },
+    {
+      "kind": "flow",
+      "name": "non-retryable stops on first attempt",
+      "script": [404],
+      "attempts": 1
+    },
+    {
+      "kind": "flow",
+      "name": "exhausted retries reports attempt count",
+      "script": [503, 503, 503, 503],
+      "attempts": 4
+    },
+    {
+      "kind": "flow",
+      "name": "no-retries config tries exactly once",
+      "script": [500, 200],
+      "attempts": 1,
+      "config": { "max_retries": 0 }
+    }
+  ]
+}

@@ -58,6 +58,18 @@
         "typescript": "^5.8.0",
       },
     },
+    "packages/fetchkit": {
+      "name": "@est/fetchkit",
+      "version": "0.1.0",
+      "dependencies": {
+        "@est/envelope": "0.1.0",
+        "@est/errcode": "0.1.0",
+      },
+      "devDependencies": {
+        "@types/bun": "^1.2.0",
+        "typescript": "^5.8.0",
+      },
+    },
     "packages/search": {
       "name": "@est/search",
       "version": "0.1.0",
@@ -251,6 +263,8 @@
     "@est/envelope": ["@est/envelope@workspace:packages/envelope"],
 
     "@est/errcode": ["@est/errcode@workspace:packages/errcode"],
+
+    "@est/fetchkit": ["@est/fetchkit@workspace:packages/fetchkit"],
 
     "@est/search": ["@est/search@workspace:packages/search"],
 
