@@ -58,13 +58,17 @@ for (const dir of existsSync(pkgDir) ? readdirSync(pkgDir) : []) {
 for (const [name, entry] of Object.entries(registry.packages ?? {})) {
   if (!existsSync(join(pkgDir, name)))
     fail(findings, `${entry.npm}: registered but packages/${name} missing`);
-  // 5: fixtures live under the package name (suite == package); `mirrors`
-  // documents which Rust crate shares the same wire truth.
-  if (entry.mirrors && !existsSync(join(ROOT, "conformance", name, "cases.json"))) {
-    fail(
-      findings,
-      `${entry.npm}: mirrors ${entry.mirrors} but conformance/${name}/cases.json missing`,
-    );
+  // 5: fixtures live under a suite dir; a package owns conformance/<name>/
+  // or shares the suite named by `mirrors` (the wasm-twin case).
+  if (entry.mirrors) {
+    const own = join(ROOT, "conformance", name, "cases.json");
+    const shared = join(ROOT, "conformance", entry.mirrors, "cases.json");
+    if (!existsSync(own) && !existsSync(shared)) {
+      fail(
+        findings,
+        `${entry.npm}: mirrors ${entry.mirrors} but no conformance/${name}/ or conformance/${entry.mirrors}/cases.json`,
+      );
+    }
   }
 }
 
@@ -81,7 +85,7 @@ for (const [consumer, c] of Object.entries(registry.consumers ?? {})) {
     }
   }
 }
-for (const [name, entry] of Object.entries(registry.packages ?? {})) {
+for (const [_name, entry] of Object.entries(registry.packages ?? {})) {
   if (entry.status !== "core") continue;
   const pinned = Object.values(registry.consumers ?? {}).some(
     (c) => c.pins?.[entry.npm] === entry.version,

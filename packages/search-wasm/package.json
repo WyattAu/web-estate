@@ -1,0 +1,24 @@
+{
+  "name": "@est/search-wasm",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "wasm twin of @est/search. Version-locked to crates/search-wasm (estate-audit enforces). The artifact is built by scripts/build-wasm.sh; @est/search works without it.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src",
+    "pkg"
+  ],
+  "scripts": {
+    "build": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@est/search": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.0",
+    "typescript": "^5.8.0"
+  }
+}

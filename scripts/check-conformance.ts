@@ -32,7 +32,7 @@ for (const dir of existsSync(confDir) ? readdirSync(confDir) : []) {
     findings.push(`${dir}: cases empty`);
     continue;
   }
-  const ids = data.cases.map((c, i) => JSON.stringify(c));
+  const ids = data.cases.map((c, _i) => JSON.stringify(c));
   const dupes = ids.length - new Set(ids).size;
   if (dupes > 0) findings.push(`${dir}: ${dupes} duplicate case(s)`);
   suites++;

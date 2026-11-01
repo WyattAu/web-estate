@@ -4,7 +4,7 @@
 //   @est/errcode -> error taxonomy for index-load failure (UNAVAILABLE)
 //   @est/envelope-> result pages wrapped in the ApiResponse pagination shape
 
-import { decodeEnvelope, envelopePaginated, type PaginationMeta } from "@est/envelope";
+import { decodeEnvelope, envelopePaginated } from "@est/envelope";
 import { errcode } from "@est/errcode";
 import type { SearchDoc } from "@est/search";
 import { queryIndex, useSearchIndex } from "@est/search/solid";
@@ -108,10 +108,15 @@ export default function SearchIsland() {
                   style={{ display: "flex", gap: "0.5rem", "margin-top": "0.8rem" }}
                   aria-label="Search result pages"
                 >
-                  <button disabled={(pag()?.page ?? 1) <= 1} onClick={() => setPage((p) => p - 1)}>
+                  <button
+                    type="button"
+                    disabled={(pag()?.page ?? 1) <= 1}
+                    onClick={() => setPage((p) => p - 1)}
+                  >
                     &larr; prev
                   </button>
                   <button
+                    type="button"
                     disabled={(pag()?.page ?? 1) >= (pag()?.total_pages ?? 1)}
                     onClick={() => setPage((p) => p + 1)}
                   >

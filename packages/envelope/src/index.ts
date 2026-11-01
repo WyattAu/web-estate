@@ -2,7 +2,7 @@
 // Wire truth: conformance/envelope/cases.json.
 // Wire keys are snake_case exactly as serde emits them (per_page, total_pages).
 
-import { ERROR_CODES, type ErrorCodeName } from "@est/errcode";
+import type { ErrorCodeName } from "@est/errcode";
 
 /** API error details; wire-compatible with json-envelope::ApiError. */
 export interface ApiError {
@@ -48,10 +48,14 @@ function decodeApiError(v: unknown): ApiError | string {
 function decodePagination(v: unknown): PaginationMeta | string {
   if (!isRecord(v)) return "pagination: not an object";
   const { page, per_page, total, total_pages } = v;
-  if (!Number.isInteger(page)) return "pagination.page: not an integer";
-  if (!Number.isInteger(per_page)) return "pagination.per_page: not an integer";
+  if (typeof page !== "number" || !Number.isInteger(page)) return "pagination.page: not an integer";
+  if (typeof per_page !== "number" || !Number.isInteger(per_page)) {
+    return "pagination.per_page: not an integer";
+  }
   if (typeof total !== "number") return "pagination.total: not a number";
-  if (!Number.isInteger(total_pages)) return "pagination.total_pages: not an integer";
+  if (typeof total_pages !== "number" || !Number.isInteger(total_pages)) {
+    return "pagination.total_pages: not an integer";
+  }
   return { page, per_page, total, total_pages };
 }
 
@@ -104,14 +108,17 @@ export function envelopePaginated<T>(data: T, pagination: PaginationMeta): ApiRe
 
 /** Error envelope from an errcode variant; omit keys on a plain encode. */
 export function envelopeError(
-  code: ErrorCodeName | string,
+  code: ErrorCodeName,
+  message: string,
+  details?: unknown,
+): ApiResponse<never>;
+export function envelopeError(code: string, message: string, details?: unknown): ApiResponse<never>;
+export function envelopeError(
+  code: string,
   message: string,
   details?: unknown,
 ): ApiResponse<never> {
-  const err: ApiError = {
-    code: typeof code === "string" ? code : ERROR_CODES[code].code,
-    message,
-  };
+  const err: ApiError = { code, message };
   if (details !== undefined) err.details = details;
   return { success: false, error: err };
 }

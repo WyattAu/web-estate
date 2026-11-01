@@ -75,6 +75,21 @@ packages:
       status: draft
       last_audit: "2026-11-01"
 
+  search-wasm:
+    npm: "@est/search-wasm"
+    version: "0.1.0"
+    area: app
+    status: support
+    mirrors: "search"
+    notes: "wasm-backed SearchIndex; artifact built by scripts/build-wasm.sh, version-locked to crates/search-wasm."
+    docs:
+      tier: k
+      specs: ["packages/search/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: "2026-11-01"
+
 consumers:
   directory:
     path: "apps/directory"
@@ -88,5 +103,5 @@ crates:
   search-wasm:
     path: "crates/search-wasm"
     version: "0.1.0"
-    notes: "wasm-bindgen port of the search index ABI. Optional at runtime; @est/search falls back to TS."
-    wrapper: null
+    notes: "wasm twin of the search index ABI. Optional at runtime; @est/search falls back to TS. Artifact built by scripts/build-wasm.sh."
+    wrapper: "@est/search-wasm"

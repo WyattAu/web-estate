@@ -6,3 +6,4 @@ target/
 crates/*/pkg/
 *.tsbuildinfo
 .DS_Store
+packages/search-wasm/pkg/

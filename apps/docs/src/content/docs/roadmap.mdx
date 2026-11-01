@@ -1,0 +1,73 @@
+---
+title: Roadmap
+description: Sequenced by consumer suites, not kit wishlist. Apps pull, kits follow.
+---
+
+DRAFT (no oracle yet; a plan without enforcement is draft material). The
+three standing decisions are recorded at the bottom.
+
+## Thesis
+
+The Rust estate compounds because kits were extracted from real suites and
+`core` is earned by exact consumer pins. The web estate inherits that loop:
+each phase exists to produce one deployed suite that pins kits and forces
+the next extraction.
+
+## Phase 0: consolidation
+
+| Item | Action |
+|---|---|
+| CI | first GitHub Actions run green on `WyattAu/web-estate` |
+| Rust parity | PR to `json-envelope`: canonical fixture file + consuming test |
+| wasm artifact | `wasm-pack` build, `@est/search-wasm` wrapper, version-lock active |
+| Typecheck | `astro check` in the apps' `build` verb |
+| Smoke oracle | `contract` serves `dist/` and asserts index, entity, sitemap respond 200 |
+| Deploy | directory on Cloudflare Pages; first public URL |
+
+Exit: a public URL serving the prerendered directory; CI red/green on GitHub.
+
+## Phase 1: the fetch bridge
+
+`@est/fetchkit`: TS twin of `retry-backoff` + `cachekit` semantics with
+`decodeEnvelope` at the edge; fixtures shared with the Rust crates. A suite
+performs a real round trip against an axum backend. Exit: `errcode`,
+`envelope`, `search` eligible for `core`.
+
+## Phase 2: state + platform services
+
+| Kit | Rust mirror | Fixtures |
+|---|---|---|
+| `@est/flags` | `flagsd` | evaluation semantics |
+| `@est/i18n` | `i18n-kit` | shared message catalogs |
+| `@est/ws` | `ws-kit` / `ws-barbican` | identical message envelopes |
+| `@est/crdt` | `crdts-kit` (wasm) | ops and merge cases |
+| `@est/otel` | `otelkit` | attribute and naming tables |
+
+## Phase 3: the money-grade suite
+
+`@est/money-wasm`: the `money` crate in the browser, fixtures from the Rust
+test vectors, algebra inherited from `accounting-spec`. Consumer: the
+**ledger dashboard suite** composing `webauthn-kit`, `money-wasm`,
+envelope errors, flags, i18n, `ws`, otel. The suite composes; it holds no
+business logic. One suite graduates several kits to `core` at once.
+
+## Phase 4: platform hardening
+
+Shared web CI workflow (the `rust-kit` analog); SBOM and provenance for npm
+artifacts; TS semver gate; `OmniWeb-template`; CSS tokens generated from
+`theme-kit`; `a11y-kit` checklist on islands; `starlight-kit` consolidation
+of the per-site repos.
+
+## Repo lifecycle
+
+Monorepo until a kit gains an external consumer, an independent release
+cadence, or CI contention; then extract. The registry schema models both
+shapes (`packages:` today, `repos:` when split), so the audit does not
+change.
+
+## Standing decisions (2026-11-01)
+
+1. Deploy target: **Cloudflare Pages**.
+2. npm posture: **publish `@est/*` publicly at `core` graduation**, mirroring
+   the crates.io discipline.
+3. Phase 3 suite: **ledger dashboard**.

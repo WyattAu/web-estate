@@ -36,8 +36,8 @@ describe("conformance: errcode", () => {
     } else {
       test(`problem ${c.variant}${c.detail ? " with detail" : ""}`, () => {
         const problem = makeProblem(c.variant as never, {
-          detail: c.detail,
-          instance: c.instance,
+          ...(c.detail !== undefined ? { detail: c.detail } : {}),
+          ...(c.instance !== undefined ? { instance: c.instance } : {}),
         });
         // Exact wire shape: optional keys omitted when absent (serde skip_serializing_if).
         expect(JSON.parse(JSON.stringify(problem))).toEqual(c.expected);

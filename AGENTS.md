@@ -12,13 +12,13 @@ business logic.
 
 ## Where the truth lives
 
-| Concern                                | Truth                            | Mirrors/projections      |
-| -------------------------------------- | -------------------------------- | ------------------------ |
-| Packages, versions, statuses, pins     | `estate.yml`                     | `llms.txt`, audit report |
+| Concern                                | Truth                                                                                                | Mirrors/projections      |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------ |
+| Packages, versions, statuses, pins     | `estate.yml`                                                                                         | `llms.txt`, audit report |
 | Wire semantics shared with Rust crates | `conformance/errcode/cases.json`, `conformance/envelope/cases.json`, `conformance/search/cases.json` | tests in both languages  |
-| Kit contracts                          | `packages/errcode/SPEC.md`, `packages/envelope/SPEC.md`, `packages/search/SPEC.md` | docs app pages |
-| wasm ABI                               | `crates/search-wasm/src/lib.rs`  | optional npm wrapper     |
-| Verbs                                  | `package.json` scripts           | `Makefile`, CI           |
+| Kit contracts                          | `packages/errcode/SPEC.md`, `packages/envelope/SPEC.md`, `packages/search/SPEC.md`                   | docs app pages           |
+| wasm ABI                               | `crates/search-wasm/src/lib.rs`                                                                      | optional npm wrapper     |
+| Verbs                                  | `package.json` scripts                                                                               | `Makefile`, CI           |
 
 ## The verbs
 
