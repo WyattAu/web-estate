@@ -151,7 +151,7 @@ export function createFetchKit(options: FetchKitOptions = {}): FetchKit {
       }
     }
     return {
-      envelope: envelopeError(name, errcode(name).reason, { status, url }),
+      envelope: envelopeError(errcode(name).code, errcode(name).reason, { status, url }),
       retryable: isRetryableStatus(status),
     };
   }
