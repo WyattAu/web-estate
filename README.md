@@ -27,6 +27,12 @@ bun run scripts/new-kit.ts my-kit dx   # scaffold a new kit
 | `apps/directory` | Astro + Solid islands | 506-site directory; first consumer pinning the kits |
 | `apps/docs`      | Starlight             | estate handbook and kit docs                        |
 
+Deploy (needs Cloudflare auth: `wrangler login` or `CLOUDFLARE_API_TOKEN`):
+
+```sh
+cd apps/directory && bun run deploy   # wrangler pages deploy, project web-estate-directory
+```
+
 ## The compounding rules
 
 1. Everything an estate needs from a package (SPEC, fixtures, registry

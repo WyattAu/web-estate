@@ -7,7 +7,8 @@
     "build": "astro check && astro build",
     "dev": "astro dev",
     "preview": "astro preview",
-    "test": "bun test"
+    "test": "bun test",
+    "deploy": "bunx wrangler pages deploy dist --project-name=web-estate-directory"
   },
   "dependencies": {
     "@est/envelope": "0.1.0",
