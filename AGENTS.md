@@ -16,7 +16,7 @@ business logic.
 | -------------------------------------- | -------------------------------- | ------------------------ |
 | Packages, versions, statuses, pins     | `estate.yml`                     | `llms.txt`, audit report |
 | Wire semantics shared with Rust crates | `conformance/<suite>/cases.json` | tests in both languages  |
-| Kit contracts                          | `packages/<kit>/SPEC.md`         | docs app pages           |
+| Kit contracts                          | `packages/errcode/SPEC.md`, `packages/envelope/SPEC.md`, `packages/search/SPEC.md` | docs app pages |
 | wasm ABI                               | `crates/search-wasm/src/lib.rs`  | optional npm wrapper     |
 | Verbs                                  | `package.json` scripts           | `Makefile`, CI           |
 
