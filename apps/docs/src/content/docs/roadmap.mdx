@@ -27,16 +27,22 @@ DONE (2026-11-01). All items closed; exit criterion met:
 
 ## Phase 1: the fetch bridge
 
-`@est/fetchkit` is shipped and fixture-pinned: backoff formula mirrored
-from `retry-backoff` (same defaults, same cap, same jitter bound), strict
-envelope decoding, status-to-errcode mapping on the wire
-(`RATE_LIMITED`, not variant names), loopback integration tests over real
-HTTP. Cache semantics are deferred to `@est/cachekit` (SC-1: one concern).
+DONE (2026-11-01), exit criterion met:
 
-Remaining for exit: a deployed suite performs a live round trip against an
-axum backend endpoint speaking envelopes over HTTP (the deployed directory
-is live; the backend endpoint is the open decision). Exit: `fetchkit`
-eligible for `core`.
+- `@est/fetchkit` shipped and fixture-pinned: backoff mirrored from
+  `retry-backoff` (same defaults, cap, jitter bound), strict envelope
+  decoding, wire codes in crate `as_str` form, loopback integration tests
+  over real HTTP.
+- `apps/directory-api`: Cloudflare Worker serving envelope responses,
+  running `@est/search` server-side over `@est/directory-data`; CORS
+  allowlisted to the site origin.
+- **Live round trip**: the deployed directory's search island queries the
+  deployed API through `@est/fetchkit` (live-first, local index fallback);
+  the result count renders a `live api` chip when the wire answered.
+- Exit: `fetchkit` pinned exactly by the deployed suite; `core` claim
+  available at the next registry audit.
+
+Cache semantics are deferred to `@est/cachekit` (SC-1: one concern).
 
 ## Phase 2: state + platform services
 

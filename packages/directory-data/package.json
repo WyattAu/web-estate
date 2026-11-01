@@ -1,0 +1,17 @@
+{
+  "name": "@est/directory-data",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "The 506-site directory dataset and its access layer. Provenance and usage boundary: apps/directory/DATA.md.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.0",
+    "typescript": "^5.9.0"
+  }
+}

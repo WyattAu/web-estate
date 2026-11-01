@@ -1,0 +1,7 @@
+name = "web-estate-directory-api"
+main = "src/worker.ts"
+compatibility_date = "2026-11-01"
+
+# The API for the deployed directory suite. Serves json-envelope responses
+# from the same @est kits the frontend uses; the search index runs here
+# server-side from the same fixture-shaped corpus.

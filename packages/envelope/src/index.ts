@@ -2,7 +2,7 @@
 // Wire truth: conformance/envelope/cases.json.
 // Wire keys are snake_case exactly as serde emits them (per_page, total_pages).
 
-import type { ErrorCodeName } from "@est/errcode";
+import { ERROR_CODES, type ErrorCodeName } from "@est/errcode";
 
 /** API error details; wire-compatible with json-envelope::ApiError. */
 export interface ApiError {
@@ -118,7 +118,10 @@ export function envelopeError(
   message: string,
   details?: unknown,
 ): ApiResponse<never> {
-  const err: ApiError = { code, message };
+  // Wire truth: the crate's as_str form (e.g. "VALIDATION"). A variant
+  // name ("Validation") is normalized; unknown strings pass through.
+  const known = (ERROR_CODES as Record<string, { code: string } | undefined>)[code];
+  const err: ApiError = { code: known ? known.code : code, message };
   if (details !== undefined) err.details = details;
   return { success: false, error: err };
 }

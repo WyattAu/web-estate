@@ -1,15 +1,25 @@
-// The search island: the only interactive island on the site.
+// The search island: live-first through the deployed directory API
+// (fetchkit round trip: retry, envelope decode, pagination from the wire),
+// falling back to the local @est/search index when the API is unreachable.
 // Kits pinned exactly and used for real:
-//   @est/search  -> corpus index + scored queries (TS impl; wasm twin optional)
-//   @est/errcode -> error taxonomy for index-load failure (UNAVAILABLE)
-//   @est/envelope-> result pages wrapped in the ApiResponse pagination shape
+//   @est/fetchkit  -> live round trip
+//   @est/search    -> local fallback index
+//   @est/errcode   -> error taxonomy
+//   @est/envelope  -> result pages shaped by PaginationMeta
 
-import { decodeEnvelope, envelopePaginated } from "@est/envelope";
-import { errcode } from "@est/errcode";
-import type { SearchDoc } from "@est/search";
+import { For, Match, Show, Switch, createResource, createSignal } from "solid-js";
+import { createFetchKit } from "@est/fetchkit";
 import { queryIndex, useSearchIndex } from "@est/search/solid";
-import { createMemo, createSignal, For, Match, Show, Switch } from "solid-js";
-import { type SiteRecord, sites } from "../lib/data";
+import type { SearchDoc } from "@est/search";
+import { errcode } from "@est/errcode";
+import {
+  decodeEnvelope,
+  envelopePaginated,
+  type ApiResponse,
+  type PaginationMeta,
+} from "@est/envelope";
+import { DIRECTORY_API_BASE } from "../lib/api";
+import { sites, type SiteRecord } from "../lib/data";
 
 const PER_PAGE = 12;
 
@@ -20,6 +30,12 @@ const corpus: SearchDoc[] = sites.map((s) => ({
   tags: s.tags,
   description: s.description ?? "",
 }));
+
+const kit = createFetchKit({
+  retry: { maxRetries: 1, initialDelayMs: 120, maxDelayMs: 400, jitter: false },
+});
+
+type SearchResult = { env: ApiResponse<SiteRecord[]>; live: boolean } | undefined;
 
 function SiteCard(props: { site: SiteRecord }) {
   return (
@@ -32,33 +48,62 @@ function SiteCard(props: { site: SiteRecord }) {
 }
 
 export default function SearchIsland() {
-  const indexRes = useSearchIndex(async () => corpus);
+  const [indexRes] = useSearchIndex(async () => corpus);
   const [q, setQ] = createSignal("");
   const [page, setPage] = createSignal(1);
 
-  const pageEnvelope = createMemo(() => {
-    const index = indexRes();
-    if (!index) return undefined;
-    const hits = queryIndex(index, q(), 200);
-    const totalPages = Math.max(1, Math.ceil(hits.length / PER_PAGE));
-    const p = Math.min(page(), totalPages);
-    const slice = hits
-      .slice((p - 1) * PER_PAGE, p * PER_PAGE)
-      .map((h) => corpusMap.get(h.id))
-      .filter((s): s is SiteRecord => s !== undefined);
-    // The envelope kit shapes the contract the UI renders from; decode
-    // round-trips it so the island breaks loudly if the wire shape drifts.
-    const env = envelopePaginated(slice, {
-      page: p,
-      per_page: PER_PAGE,
-      total: hits.length,
-      total_pages: totalPages,
-    });
-    const decoded = decodeEnvelope<SiteRecord[]>(JSON.parse(JSON.stringify(env)));
-    return decoded.ok ? decoded.envelope : undefined;
-  });
+  const [results] = createResource(
+    () => ({ q: q(), page: page(), ready: Boolean(indexRes()) }),
+    async (src): Promise<SearchResult> => {
+      // Live first: a real fetchkit round trip against the deployed API.
+      if (src.q.trim() !== "") {
+        try {
+          const out = await kit.fetchEnvelopeWithMeta<SiteRecord[]>(
+            `${DIRECTORY_API_BASE}/api/search?q=${encodeURIComponent(src.q)}&limit=200`,
+          );
+          if (out.envelope.success && Array.isArray(out.envelope.data)) {
+            const hits = out.envelope.data;
+            const totalPages = Math.max(1, Math.ceil(hits.length / PER_PAGE));
+            const p = Math.min(src.page, totalPages);
+            const slice = hits.slice((p - 1) * PER_PAGE, p * PER_PAGE);
+            const env = envelopePaginated(slice, {
+              page: p,
+              per_page: PER_PAGE,
+              total: hits.length,
+              total_pages: totalPages,
+            });
+            // Decode round-trip keeps the island honest about the wire shape.
+            const decoded = decodeEnvelope<SiteRecord[]>(
+              JSON.parse(JSON.stringify(env)),
+            );
+            if (decoded.ok) return { env: decoded.envelope, live: true };
+          }
+        } catch {
+          // API unreachable: local fallback below.
+        }
+      }
+      // Local fallback (also serves the empty query).
+      const index = indexRes();
+      if (!index) return undefined;
+      const hits = queryIndex(index, src.q, 200);
+      const totalPages = Math.max(1, Math.ceil(hits.length / PER_PAGE));
+      const p = Math.min(src.page, totalPages);
+      const slice = hits
+        .slice((p - 1) * PER_PAGE, p * PER_PAGE)
+        .map((h) => corpusMap.get(h.id))
+        .filter((s): s is SiteRecord => s !== undefined);
+      const env = envelopePaginated(slice, {
+        page: p,
+        per_page: PER_PAGE,
+        total: hits.length,
+        total_pages: totalPages,
+      });
+      const decoded = decodeEnvelope<SiteRecord[]>(JSON.parse(JSON.stringify(env)));
+      return decoded.ok ? { env: decoded.envelope, live: false } : undefined;
+    },
+  );
 
-  const pag = createMemo(() => pageEnvelope()?.pagination);
+  const pag = (): PaginationMeta | undefined => results()?.env.pagination;
 
   return (
     <div>
@@ -88,20 +133,22 @@ export default function SearchIsland() {
             {errcode("Unavailable").code}: index failed to load; refresh to retry.
           </p>
         </Match>
-        <Match when={!indexRes()}>
-          <p class="muted">Loading index...</p>
+        <Match when={results.loading}>
+          <p class="muted">Searching...</p>
         </Match>
-        <Match when={pageEnvelope()} keyed>
-          {(env) => (
+        <Match when={results()} keyed>
+          {(r) => (
             <>
               <p class="muted" style={{ margin: "0.6rem 0 0.4rem" }}>
                 {pag()?.total ?? 0} result(s)
                 {(pag()?.total_pages ?? 1) > 1
                   ? ` | page ${pag()?.page} of ${pag()?.total_pages}`
                   : ""}
+                {" | "}
+                <span class="chip">{r.live ? "live api" : "local index"}</span>
               </p>
               <div class="grid">
-                <For each={env.data ?? []}>{(s) => <SiteCard site={s} />}</For>
+                <For each={r.env.data ?? []}>{(s) => <SiteCard site={s} />}</For>
               </div>
               <Show when={(pag()?.total_pages ?? 1) > 1}>
                 <nav

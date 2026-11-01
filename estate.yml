@@ -105,13 +105,38 @@ packages:
       status: draft
       last_audit: "2026-11-01"
 
+  directory-data:
+    npm: "@est/directory-data"
+    version: "0.1.0"
+    area: app
+    status: support
+    notes: "The 506-site corpus and its access layer; single home for the dataset, consumed by directory and directory-api. Do-not-publish boundary: apps/directory/DATA.md."
+    docs:
+      tier: k
+      specs: ["packages/directory-data/README.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: "2026-11-01"
+
 consumers:
   directory:
     path: "apps/directory"
     notes: "Tabworthy-style directory: first consumer suite, deployed at https://web-estate-directory.pages.dev (Cloudflare Pages, project web-estate-directory). Pins @est/errcode, @est/envelope, @est/search exactly."
     pins:
-      "@est/errcode": "0.1.0"
+      "@est/directory-data": "0.1.0"
       "@est/envelope": "0.1.0"
+      "@est/errcode": "0.1.0"
+      "@est/fetchkit": "0.1.0"
+      "@est/search": "0.1.0"
+
+  directory-api:
+    path: "apps/directory-api"
+    notes: "Cloudflare Worker serving the directory API as json-envelope responses; runs @est/search server-side over @est/directory-data. Pins the kits exactly."
+    pins:
+      "@est/directory-data": "0.1.0"
+      "@est/envelope": "0.1.0"
+      "@est/errcode": "0.1.0"
       "@est/search": "0.1.0"
 
 crates:

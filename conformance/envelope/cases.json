@@ -94,6 +94,12 @@
     },
     {
       "kind": "encode",
+      "name": "variant name normalizes to the wire code",
+      "construct": { "code": "Validation", "message": "x" },
+      "expected": { "success": false, "error": { "code": "VALIDATION", "message": "x" } }
+    },
+    {
+      "kind": "encode",
       "name": "success encode omits error and pagination",
       "construct": { "data": [1, 2, 3] },
       "expected": { "success": true, "data": [1, 2, 3] }

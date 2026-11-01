@@ -1,0 +1,23 @@
+{
+  "name": "directory-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "test": "bun test",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@est/directory-data": "0.1.0",
+    "@est/envelope": "0.1.0",
+    "@est/errcode": "0.1.0",
+    "@est/search": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.0",
+    "typescript": "^5.9.0",
+    "wrangler": "^4.0.0"
+  }
+}
