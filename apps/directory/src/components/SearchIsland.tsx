@@ -59,7 +59,7 @@ export default function SearchIsland() {
       if (src.q.trim() !== "") {
         try {
           const out = await kit.fetchEnvelopeWithMeta<SiteRecord[]>(
-            `${DIRECTORY_API_BASE}/api/search?q=${encodeURIComponent(src.q)}&limit=200`,
+            `${DIRECTORY_API_BASE}/api/search?q=${encodeURIComponent(src.q)}&limit=100`,
           );
           if (out.envelope.success && Array.isArray(out.envelope.data)) {
             const hits = out.envelope.data;
@@ -85,7 +85,7 @@ export default function SearchIsland() {
       // Local fallback (also serves the empty query).
       const index = indexRes();
       if (!index) return undefined;
-      const hits = queryIndex(index, src.q, 200);
+      const hits = queryIndex(index, src.q, 100);
       const totalPages = Math.max(1, Math.ceil(hits.length / PER_PAGE));
       const p = Math.min(src.page, totalPages);
       const slice = hits
