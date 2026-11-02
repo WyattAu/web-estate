@@ -48,7 +48,7 @@ function SiteCard(props: { site: SiteRecord }) {
 }
 
 export default function SearchIsland() {
-  const [indexRes] = useSearchIndex(async () => corpus);
+  const indexRes = useSearchIndex(async () => corpus);
   const [q, setQ] = createSignal("");
   const [page, setPage] = createSignal(1);
 
