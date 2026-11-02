@@ -58,14 +58,18 @@ export default function SearchIsland() {
       // Live first: a real fetchkit round trip against the deployed API.
       if (src.q.trim() !== "") {
         try {
-          const out = await kit.fetchEnvelopeWithMeta<SiteRecord[]>(
+          const out = await kit.fetchEnvelopeWithMeta<{ id: string; score: number }[]>(
             `${DIRECTORY_API_BASE}/api/search?q=${encodeURIComponent(src.q)}&limit=100`,
           );
           if (out.envelope.success && Array.isArray(out.envelope.data)) {
             const hits = out.envelope.data;
             const totalPages = Math.max(1, Math.ceil(hits.length / PER_PAGE));
             const p = Math.min(src.page, totalPages);
-            const slice = hits.slice((p - 1) * PER_PAGE, p * PER_PAGE);
+            // Hits carry ids; hydrate to full records from the shared corpus.
+            const slice = hits
+              .slice((p - 1) * PER_PAGE, p * PER_PAGE)
+              .map((h) => corpusMap.get(h.id))
+              .filter((s): s is SiteRecord => s !== undefined);
             const env = envelopePaginated(slice, {
               page: p,
               per_page: PER_PAGE,
