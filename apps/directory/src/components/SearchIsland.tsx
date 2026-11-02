@@ -7,19 +7,19 @@
 //   @est/errcode   -> error taxonomy
 //   @est/envelope  -> result pages shaped by PaginationMeta
 
-import { For, Match, Show, Switch, createResource, createSignal } from "solid-js";
-import { createFetchKit } from "@est/fetchkit";
-import { queryIndex, useSearchIndex } from "@est/search/solid";
-import type { SearchDoc } from "@est/search";
-import { errcode } from "@est/errcode";
 import {
+  type ApiResponse,
   decodeEnvelope,
   envelopePaginated,
-  type ApiResponse,
   type PaginationMeta,
 } from "@est/envelope";
+import { errcode } from "@est/errcode";
+import { createFetchKit } from "@est/fetchkit";
+import type { SearchDoc } from "@est/search";
+import { queryIndex, useSearchIndex } from "@est/search/solid";
+import { createResource, createSignal, For, Match, Show, Switch } from "solid-js";
 import { DIRECTORY_API_BASE } from "../lib/api";
-import { sites, type SiteRecord } from "../lib/data";
+import { type SiteRecord, sites } from "../lib/data";
 
 const PER_PAGE = 12;
 
@@ -77,9 +77,7 @@ export default function SearchIsland() {
               total_pages: totalPages,
             });
             // Decode round-trip keeps the island honest about the wire shape.
-            const decoded = decodeEnvelope<SiteRecord[]>(
-              JSON.parse(JSON.stringify(env)),
-            );
+            const decoded = decodeEnvelope<SiteRecord[]>(JSON.parse(JSON.stringify(env)));
             if (decoded.ok) return { env: decoded.envelope, live: true };
           }
         } catch {

@@ -2,14 +2,10 @@
 // URL, returns an envelope-shaped Response. Testable in bun without a
 // Workers runtime; src/worker.ts is the thin Cloudflare shell.
 
-import {
-  envelopeError,
-  envelopePaginated,
-  type ApiResponse,
-} from "@est/envelope";
-import { errcode, type ErrorCodeName } from "@est/errcode";
+import { type SiteRecord, sites } from "@est/directory-data";
+import { type ApiResponse, envelopeError, envelopePaginated } from "@est/envelope";
+import { type ErrorCodeName, errcode } from "@est/errcode";
 import { indexDocs, type SearchDoc } from "@est/search";
-import { sites, type SiteRecord } from "@est/directory-data";
 
 export interface RouteResult {
   response: ApiResponse<unknown>;
@@ -33,10 +29,7 @@ export function corsHeaders(origin: string | null): Record<string, string> {
   return base;
 }
 
-function envelopeResponse(
-  result: RouteResult,
-  origin: string | null,
-): Response {
+function envelopeResponse(result: RouteResult, origin: string | null): Response {
   return new Response(JSON.stringify(result.response), {
     status: result.status,
     headers: { "content-type": "application/json; charset=utf-8", ...corsHeaders(origin) },
@@ -79,7 +72,8 @@ export function handleApiRequest(url: URL): RouteResult {
   if (path === "/api/sites") {
     const pageRaw = Number(url.searchParams.get("page") ?? "1");
     const perPageRaw = Number(url.searchParams.get("per_page") ?? "50");
-    if (!Number.isInteger(pageRaw) || pageRaw < 1) return fail("BadRequest", "page must be a positive integer");
+    if (!Number.isInteger(pageRaw) || pageRaw < 1)
+      return fail("BadRequest", "page must be a positive integer");
     if (!Number.isInteger(perPageRaw) || perPageRaw < 1 || perPageRaw > 100) {
       return fail("BadRequest", "per_page must be an integer in 1..100");
     }
@@ -87,7 +81,14 @@ export function handleApiRequest(url: URL): RouteResult {
     const totalPages = Math.max(1, Math.ceil(sorted.length / perPageRaw));
     const page = Math.min(pageRaw, totalPages);
     const slice = sorted.slice((page - 1) * perPageRaw, page * perPageRaw).map(summary);
-    return ok(envelopePaginated(slice, { page, per_page: perPageRaw, total: sorted.length, total_pages: totalPages }));
+    return ok(
+      envelopePaginated(slice, {
+        page,
+        per_page: perPageRaw,
+        total: sorted.length,
+        total_pages: totalPages,
+      }),
+    );
   }
 
   const siteMatch = /^\/api\/sites\/([^/]+)$/.exec(path);
