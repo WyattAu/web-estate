@@ -1,35 +1,67 @@
 {
   "suite": "envelope",
   "wire": 1,
-  "source_of_truth": "WyattAu/json-envelope src/envelope.rs (ApiResponse/ApiError/PaginationMeta; snake_case wire keys)",
+  "source_of_truth": "WyattAu/json-envelope tests/conformance_cases.json (canonical); web-estate/conformance/envelope/cases.json is a vendored projection",
   "cases": [
     {
       "kind": "decode",
       "name": "success with data",
-      "input": { "success": true, "data": { "id": 7 } },
+      "input": {
+        "success": true,
+        "data": {
+          "id": 7
+        }
+      },
       "expect": "ok",
-      "expected": { "success": true, "data": { "id": 7 } }
+      "expected": {
+        "success": true,
+        "data": {
+          "id": 7
+        }
+      }
     },
     {
       "kind": "decode",
       "name": "success without data (ApiResponse<()>)",
-      "input": { "success": true },
+      "input": {
+        "success": true
+      },
       "expect": "ok",
-      "expected": { "success": true }
+      "expected": {
+        "success": true
+      }
     },
     {
       "kind": "decode",
       "name": "paginated response",
       "input": {
         "success": true,
-        "data": [{ "slug": "townscaper" }],
-        "pagination": { "page": 2, "per_page": 50, "total": 506, "total_pages": 11 }
+        "data": [
+          {
+            "slug": "townscaper"
+          }
+        ],
+        "pagination": {
+          "page": 2,
+          "per_page": 50,
+          "total": 506,
+          "total_pages": 11
+        }
       },
       "expect": "ok",
       "expected": {
         "success": true,
-        "data": [{ "slug": "townscaper" }],
-        "pagination": { "page": 2, "per_page": 50, "total": 506, "total_pages": 11 }
+        "data": [
+          {
+            "slug": "townscaper"
+          }
+        ],
+        "pagination": {
+          "page": 2,
+          "per_page": 50,
+          "total": 506,
+          "total_pages": 11
+        }
       }
     },
     {
@@ -37,43 +69,79 @@
       "name": "error response",
       "input": {
         "success": false,
-        "error": { "code": "NOT_FOUND", "message": "no such site", "details": { "slug": "nope" } }
+        "error": {
+          "code": "NOT_FOUND",
+          "message": "no such site",
+          "details": {
+            "slug": "nope"
+          }
+        }
       },
       "expect": "ok",
       "expected": {
         "success": false,
-        "error": { "code": "NOT_FOUND", "message": "no such site", "details": { "slug": "nope" } }
+        "error": {
+          "code": "NOT_FOUND",
+          "message": "no such site",
+          "details": {
+            "slug": "nope"
+          }
+        }
       }
     },
     {
       "kind": "decode",
       "name": "error without details",
-      "input": { "success": false, "error": { "code": "RATE_LIMITED", "message": "slow down" } },
+      "input": {
+        "success": false,
+        "error": {
+          "code": "RATE_LIMITED",
+          "message": "slow down"
+        }
+      },
       "expect": "ok",
-      "expected": { "success": false, "error": { "code": "RATE_LIMITED", "message": "slow down" } }
+      "expected": {
+        "success": false,
+        "error": {
+          "code": "RATE_LIMITED",
+          "message": "slow down"
+        }
+      }
     },
     {
       "kind": "decode",
       "name": "failure without error object is rejected",
-      "input": { "success": false },
+      "input": {
+        "success": false
+      },
       "expect": "reject"
     },
     {
       "kind": "decode",
       "name": "success with error object is rejected",
-      "input": { "success": true, "error": { "code": "INTERNAL", "message": "x" } },
+      "input": {
+        "success": true,
+        "error": {
+          "code": "INTERNAL",
+          "message": "x"
+        }
+      },
       "expect": "reject"
     },
     {
       "kind": "decode",
       "name": "missing success field is rejected",
-      "input": { "data": {} },
+      "input": {
+        "data": {}
+      },
       "expect": "reject"
     },
     {
       "kind": "decode",
       "name": "non-boolean success is rejected",
-      "input": { "success": "yes" },
+      "input": {
+        "success": "yes"
+      },
       "expect": "reject"
     },
     {
@@ -82,27 +150,63 @@
       "input": {
         "success": true,
         "data": [],
-        "pagination": { "page": 1, "perPage": 50, "total": 0, "totalPages": 0 }
+        "pagination": {
+          "page": 1,
+          "perPage": 50,
+          "total": 0,
+          "totalPages": 0
+        }
       },
       "expect": "reject"
     },
     {
       "kind": "encode",
       "name": "error encode omits data and pagination",
-      "construct": { "code": "VALIDATION", "message": "bad input" },
-      "expected": { "success": false, "error": { "code": "VALIDATION", "message": "bad input" } }
+      "construct": {
+        "code": "VALIDATION",
+        "message": "bad input"
+      },
+      "expected": {
+        "success": false,
+        "error": {
+          "code": "VALIDATION",
+          "message": "bad input"
+        }
+      }
     },
     {
       "kind": "encode",
       "name": "variant name normalizes to the wire code",
-      "construct": { "code": "Validation", "message": "x" },
-      "expected": { "success": false, "error": { "code": "VALIDATION", "message": "x" } }
+      "construct": {
+        "code": "Validation",
+        "message": "x"
+      },
+      "expected": {
+        "success": false,
+        "error": {
+          "code": "VALIDATION",
+          "message": "x"
+        }
+      }
     },
     {
       "kind": "encode",
       "name": "success encode omits error and pagination",
-      "construct": { "data": [1, 2, 3] },
-      "expected": { "success": true, "data": [1, 2, 3] }
+      "construct": {
+        "data": [
+          1,
+          2,
+          3
+        ]
+      },
+      "expected": {
+        "success": true,
+        "data": [
+          1,
+          2,
+          3
+        ]
+      }
     }
   ]
 }
