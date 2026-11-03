@@ -257,9 +257,10 @@ export function allocate(
   const parts = [...floors];
   const distribute = leftover > 0n ? Number(leftover) : 0;
   for (let i = 0; i < distribute; i++) {
-    const idx = order[i]?.idx;
-    const part = idx === undefined ? undefined : parts[idx];
-    if (part !== undefined) parts[idx] = part + 1n;
+    const entry = order[i];
+    if (!entry) continue;
+    const part = parts[entry.idx];
+    if (part !== undefined) parts[entry.idx] = part + 1n;
   }
 
   return parts.map((part) => ({
