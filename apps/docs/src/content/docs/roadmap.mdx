@@ -46,13 +46,28 @@ Cache semantics are deferred to `@est/cachekit` (SC-1: one concern).
 
 ## Phase 2: state + platform services
 
+STARTED (2026-11-01):
+
+- `@est/flags` shipped and fixture-pinned: mirrors flagsd's evaluate route
+  (`{name, enabled}`), fail-closed policy (`defaults[name] ?? false` when
+  flagsd is unreachable), subject serialization (`user`, `org`). Transport
+  inherits `@est/fetchkit.fetchJsonWithMeta` (flagsd predates envelopes;
+  one retry implementation, no duplication).
+- `@est/fetchkit` grew the decode-agnostic raw-JSON path for pre-envelope
+  services.
+
+Pending, in order:
+
 | Kit | Rust mirror | Fixtures |
 |---|---|---|
-| `@est/flags` | `flagsd` | evaluation semantics |
 | `@est/i18n` | `i18n-kit` | shared message catalogs |
 | `@est/ws` | `ws-kit` / `ws-barbican` | identical message envelopes |
 | `@est/crdt` | `crdts-kit` (wasm) | ops and merge cases |
 | `@est/otel` | `otelkit` | attribute and naming tables |
+
+Exit for the phase: a deployed suite consumes flags (the directory gains a
+feature-flagged surface pointed at a reachable flagsd instance) and one
+state kit has a consumer.
 
 ## Phase 3: the money-grade suite
 
