@@ -28,18 +28,22 @@ for (const dir of existsSync(confDir) ? readdirSync(confDir) : []) {
   }
   if (data.suite !== dir) findings.push(`${dir}: suite name "${data.suite}" != directory "${dir}"`);
   if (data.wire !== 1) findings.push(`${dir}: unsupported wire version ${data.wire}`);
-  // Suites are either flat case lists (`cases`) or declarative scenario
-  // groups (`scenarios`, e.g. the crdt convergence runner).
-  const items = data.cases ?? data.scenarios;
-  if (!Array.isArray(items) || items.length === 0) {
+  // Suites declare their cases under any top-level array: `cases`,
+  // `scenarios`, or named lists (`allocate_cases`, `round_cases`, ...).
+  // Validity: at least one non-empty array somewhere in the suite.
+  const arrayValues = Object.values(data as Record<string, unknown>).filter(
+    (v): v is unknown[] => Array.isArray(v),
+  );
+  const total = arrayValues.reduce((acc, arr) => acc + arr.length, 0);
+  if (arrayValues.length === 0 || total === 0) {
     findings.push(`${dir}: cases empty`);
     continue;
   }
-  const ids = items.map((c, _i) => JSON.stringify(c));
-  const dupes = ids.length - new Set(ids).size;
+  const allStrings = arrayValues.flat().map((c, _i) => JSON.stringify(c));
+  const dupes = allStrings.length - new Set(allStrings).size;
   if (dupes > 0) findings.push(`${dir}: ${dupes} duplicate case(s)`);
   suites++;
-  cases += items.length;
+  cases += total;
 }
 
 if (suites === 0) findings.push("conformance/: no suites found");
