@@ -47,7 +47,7 @@ describe("conformance: money", () => {
   for (const c of suite.allocate_cases) {
     test(`allocate: ${c.name}`, () => {
       const total = parseMoney(c.amount, "USD");
-      let parts;
+      let parts: ReturnType<typeof allocateStrings>;
       try {
         parts = allocateStrings(total, c.ratios);
         if (c.error) throw new Error(`expected ${c.error} error, got result`);
@@ -58,7 +58,7 @@ describe("conformance: money", () => {
         }
         throw e;
       }
-      expect(parts.map((p) => moneyToString(p))).toEqual(c.expected!);
+      expect(parts.map((p) => moneyToString(p))).toEqual(c.expected ?? []);
       // Preservation invariant: parts sum exactly to the original.
       const sum = parts.reduce((acc, p) => acc + p.mantissa, 0n);
       expect(sum).toBe(total.mantissa);

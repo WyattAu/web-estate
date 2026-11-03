@@ -24,7 +24,7 @@ export function corsHeaders(origin: string | null): Record<string, string> {
   };
   if (origin && ALLOWED_ORIGINS.has(origin)) {
     base["Access-Control-Allow-Origin"] = origin;
-    base["Vary"] = "Origin";
+    base.Vary = "Origin";
   }
   return base;
 }

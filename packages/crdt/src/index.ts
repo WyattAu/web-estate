@@ -80,7 +80,9 @@ export class RgaString {
       const i = this.#nodes.findIndex((n) => sameId(n.id, originLeft));
       pos = i === -1 ? 0 : i + 1;
     }
-    while (pos < this.#nodes.length && compareIds(this.#nodes[pos]!.id, id) > 0) {
+    while (pos < this.#nodes.length) {
+      const node = this.#nodes[pos];
+      if (!node || compareIds(node.id, id) <= 0) break;
       pos += 1;
     }
     return pos;

@@ -230,7 +230,9 @@ export function allocate(
   }
   const common = weights.reduce((acc, w) => gcd(acc, w), totalWeight);
   if (common > 1n) {
-    for (let i = 0; i < weights.length; i++) weights[i] = weights[i]! / common;
+    weights.forEach((w, i) => {
+      weights[i] = w / common;
+    });
     totalWeight = weights.reduce((acc, w) => acc + w, 0n);
   }
 
@@ -239,9 +241,10 @@ export function allocate(
   let allocated = 0n;
   for (const w of weights) {
     const raw = a.mantissa * w;
-    floors.push(divEuclid(raw, totalWeight));
+    const floored = divEuclid(raw, totalWeight);
+    floors.push(floored);
     remainders.push(remEuclid(raw, totalWeight));
-    allocated += floors[floors.length - 1]!;
+    allocated += floored;
   }
 
   const leftover = a.mantissa - allocated;
@@ -254,8 +257,9 @@ export function allocate(
   const parts = [...floors];
   const distribute = leftover > 0n ? Number(leftover) : 0;
   for (let i = 0; i < distribute; i++) {
-    const idx = order[i]!.idx;
-    parts[idx] = parts[idx]! + 1n;
+    const idx = order[i]?.idx;
+    const part = idx === undefined ? undefined : parts[idx];
+    if (part !== undefined) parts[idx] = part + 1n;
   }
 
   return parts.map((part) => ({
