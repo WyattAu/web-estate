@@ -1,0 +1,48 @@
+{
+  "suite": "otel",
+  "wire": 1,
+  "source_of_truth": "WyattAu/otelkit src/config.rs (TelemetryConfig defaults) + src/lib.rs resource attributes (service.name); span JSON is OTLP/HTTP standard",
+  "cases": [
+    {
+      "kind": "defaults",
+      "expected": {
+        "service_name": "unknown",
+        "service_version": "0.0.0",
+        "log_level": "info",
+        "sample_rate": 1.0
+      }
+    },
+    {
+      "kind": "resource",
+      "config": { "service_name": "directory-api", "service_version": "0.1.0" },
+      "expected_attributes": [
+        { "key": "service.name", "value": { "stringValue": "directory-api" } }
+      ]
+    },
+    { "kind": "exporter", "input": "otlp", "expected": "Otlp" },
+    { "kind": "exporter", "input": "stdout", "expected": "Stdout" },
+    { "kind": "exporter", "input": "jaeger", "expected": null },
+    { "kind": "sample", "rate": 1.0, "all": true },
+    { "kind": "sample", "rate": 0.0, "all": false },
+    {
+      "kind": "sample",
+      "rate": 0.5,
+      "deterministic": true,
+      "note": "same trace id always decides the same way"
+    },
+    {
+      "kind": "span",
+      "name": "GET /api/search",
+      "attributes": { "http.method": "GET", "url.path": "/api/search" },
+      "expect_fields": [
+        "traceId",
+        "spanId",
+        "name",
+        "attributes",
+        "startTimeUnixNano",
+        "endTimeUnixNano",
+        "kind"
+      ]
+    }
+  ]
+}

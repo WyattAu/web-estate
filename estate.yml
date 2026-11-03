@@ -31,6 +31,21 @@ owner: WyattAu
 npm_scope: "@est"
 
 packages:
+  otel:
+    npm: "@est/otel"
+    version: "0.1.0"
+    area: obsv
+    status: support
+    mirrors: "otelkit"
+    notes: "Scaffolded by new-kit; replace with a real description."
+    docs:
+      tier: k
+      specs: ["packages/otel/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: 2026-11-03
+
   crdt:
     npm: "@est/crdt"
     version: "0.1.0"
