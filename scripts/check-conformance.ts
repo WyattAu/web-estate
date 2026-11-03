@@ -31,8 +31,8 @@ for (const dir of existsSync(confDir) ? readdirSync(confDir) : []) {
   // Suites declare their cases under any top-level array: `cases`,
   // `scenarios`, or named lists (`allocate_cases`, `round_cases`, ...).
   // Validity: at least one non-empty array somewhere in the suite.
-  const arrayValues = Object.values(data as Record<string, unknown>).filter(
-    (v): v is unknown[] => Array.isArray(v),
+  const arrayValues = Object.values(data as Record<string, unknown>).filter((v): v is unknown[] =>
+    Array.isArray(v),
   );
   const total = arrayValues.reduce((acc, arr) => acc + arr.length, 0);
   if (arrayValues.length === 0 || total === 0) {
