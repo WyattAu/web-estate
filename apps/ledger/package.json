@@ -1,0 +1,30 @@
+{
+  "name": "ledger",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "astro check && astro build",
+    "dev": "astro dev",
+    "preview": "astro preview",
+    "test": "bun test",
+    "deploy": "bunx wrangler pages deploy dist --project-name=web-estate-ledger"
+  },
+  "dependencies": {
+    "@est/directory-data": "0.1.0",
+    "@est/envelope": "0.1.0",
+    "@est/errcode": "0.1.0",
+    "@est/fetchkit": "0.1.0",
+    "@est/flags": "0.1.0",
+    "@est/i18n": "0.1.0",
+    "@est/money": "0.1.0",
+    "solid-js": "^1.9.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@astrojs/sitemap": "^3.0.0",
+    "@astrojs/solid-js": "^5.0.0",
+    "astro": "^5.0.0",
+    "typescript": "^7.0.2"
+  }
+}

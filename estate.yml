@@ -26,7 +26,7 @@
 
 schema: 1
 kind: web-estate
-updated: "2026-11-01"
+updated: "2026-11-02"
 owner: WyattAu
 npm_scope: "@est"
 
@@ -214,9 +214,26 @@ consumers:
       "@est/errcode": "0.1.0"
       "@est/search": "0.1.0"
 
+  ledger:
+    path: "apps/ledger"
+    notes: "Phase 3 consumer suite: allocation dashboard (exact decimals + sum invariant), live flags fail-closed demo, two-locale labels, fetchkit status round trip to directory-api."
+    pins:
+      "@est/money": "0.1.0"
+      "@est/flags": "0.1.0"
+      "@est/i18n": "0.1.0"
+      "@est/envelope": "0.1.0"
+      "@est/errcode": "0.1.0"
+      "@est/fetchkit": "0.1.0"
+
 crates:
   search-wasm:
     path: "crates/search-wasm"
     version: "0.1.0"
     notes: "wasm twin of the search index ABI. Optional at runtime; @est/search falls back to TS. Artifact built by scripts/build-wasm.sh."
     wrapper: "@est/search-wasm"
+
+  money-wasm:
+    path: "crates/money-wasm"
+    version: "0.1.0"
+    notes: "wasm twin of @est/money: wraps the published decimal-money crate (the money estate's own implementation) over a JSON boundary; native cargo test runs the shared money fixture."
+    wrapper: null

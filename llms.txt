@@ -3,18 +3,27 @@
 
 ## Kits
 
+- [@est/money](packages/money/SPEC.md): Scaffolded by new-kit; replace with a real description. (v0.1.0, support, mirrors money)
+- [@est/otel](packages/otel/SPEC.md): Scaffolded by new-kit; replace with a real description. (v0.1.0, support, mirrors otelkit)
+- [@est/crdt](packages/crdt/SPEC.md): Scaffolded by new-kit; replace with a real description. (v0.1.0, support, mirrors crdts-kit)
+- [@est/i18n](packages/i18n/SPEC.md): Scaffolded by new-kit; replace with a real description. (v0.1.0, support, mirrors i18n-kit)
+- [@est/flags](packages/flags/SPEC.md): Scaffolded by new-kit; replace with a real description. (v0.1.0, support, mirrors flagsd)
 - [@est/fetchkit](packages/fetchkit/SPEC.md): Scaffolded by new-kit; replace with a real description. (v0.1.0, support, mirrors retry-backoff)
 - [@est/errcode](packages/errcode/SPEC.md): TS mirror of the errcode crate: 10 codes, status/code/reason/typeUri maps, RFC 7807 ProblemDetail. core since 2026-11-01: pinned by the deployed directory suite. (v0.1.0, core, mirrors errcode)
 - [@est/envelope](packages/envelope/SPEC.md): TS mirror of json-envelope: ApiResponse wire shape, snake_case pagination keys, strict decode. core since 2026-11-01: pinned by the deployed directory suite. (v0.1.0, core, mirrors json-envelope)
 - [@est/search](packages/search/SPEC.md): Client-side text search. TS implementation now; optional wasm enhancement via crates/search-wasm behind the same interface. core since 2026-11-01: pinned by the deployed directory suite. (v0.1.0, core)
 - [@est/search-wasm](packages/search-wasm/SPEC.md): wasm-backed SearchIndex; artifact built by scripts/build-wasm.sh, version-locked to crates/search-wasm. (v0.1.0, support, mirrors search)
+- [@est/directory-data](packages/directory-data/SPEC.md): The 506-site corpus and its access layer; single home for the dataset, consumed by directory and directory-api. Do-not-publish boundary: apps/directory/DATA.md. (v0.1.0, support)
 
 ## Consumers
 
 - directory: apps/directory
+- directory-api: apps/directory-api
+- ledger: apps/ledger
 
 ## Crates (wasm)
 
 - search-wasm: crates/search-wasm
+- money-wasm: crates/money-wasm
 
 Read AGENTS.md for the repo contract.

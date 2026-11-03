@@ -1,0 +1,106 @@
+---
+import AllocationIsland from "../components/AllocationIsland";
+import StatusIsland from "../components/StatusIsland";
+import FlagsIsland from "../components/FlagsIsland";
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Estate ledger</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#9671;</text></svg>" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/" class="brand">&#9671; estate ledger</a>
+        <span class="muted">a web-estate consumer suite</span>
+      </nav>
+    </header>
+    <main>
+      <h1>Estate ledger</h1>
+      <p class="muted">
+        The Phase 3 consumer suite: exact decimal allocation (money), live
+        feature flags (flags), two-locale labels (i18n), envelope status
+        (fetchkit + envelope + errcode).
+      </p>
+      <AllocationIsland client:visible />
+      <div style={{ display: "grid", gap: "1rem", gridTemplateColumns: "repeat(auto-fit, minmax(18rem, 1fr))", marginTop: "1.5rem" }}>
+        <StatusIsland client:visible />
+        <FlagsIsland client:visible />
+      </div>
+    </main>
+    <footer>
+      <p class="muted">Built with Astro + Solid islands; kits pinned exactly.</p>
+    </footer>
+    <style is:global>
+      :root {
+        --bg: #faf9f5;
+        --fg: #1c1c1a;
+        --muted: #6f6d66;
+        --card: #ffffff;
+        --accent: #3b6ef5;
+        --border: #e4e1d6;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #17181a;
+          --fg: #e8e6df;
+          --muted: #97958c;
+          --card: #1f2124;
+          --border: #2e3134;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+        line-height: 1.55;
+      }
+      main { max-width: 64rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+      header { border-bottom: 1px solid var(--border); }
+      nav {
+        max-width: 64rem; margin: 0 auto; padding: 0.9rem 1.25rem;
+        display: flex; gap: 1rem; align-items: baseline;
+      }
+      .brand { font-weight: 700; text-decoration: none; color: var(--fg); }
+      a { color: var(--accent); }
+      .muted { color: var(--muted); font-size: 0.85rem; }
+      footer { border-top: 1px solid var(--border); padding: 1rem 1.25rem 2rem; }
+      footer p { max-width: 64rem; margin: 0 auto; }
+      h1 { font-size: 1.7rem; margin: 0.4rem 0 0.8rem; }
+      h2 { font-size: 1.15rem; margin: 1.6rem 0 0.6rem; }
+      section { margin-bottom: 2.5rem; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: 0.8rem; }
+      .card {
+        background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+        padding: 0.85rem 1rem; margin-bottom: 0.6rem;
+      }
+      .card h3 { margin: 0 0 0.5rem; font-size: 1rem; }
+      .lbl { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.15rem; }
+      .big { font-size: 1.3rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+      input, select {
+        width: 100%; padding: 0.45rem 0.6rem; border-radius: 8px;
+        border: 1px solid var(--border); background: var(--card); color: var(--fg);
+      }
+      button {
+        padding: 0.4rem 0.8rem; border-radius: 8px; border: 1px solid var(--border);
+        background: var(--card); color: var(--fg); cursor: pointer;
+      }
+      ul { padding-left: 1.1rem; margin: 0.4rem 0; }
+      .ok { color: #2e7d32; }
+      .dot { font-size: 0.8rem; }
+      .dot.ok { color: #2e7d32; }
+      .dot.down { color: #c62828; }
+      .err { color: #c62828; font-weight: 600; }
+      .chip {
+        display: inline-block; padding: 0.05rem 0.5rem; border: 1px solid var(--border);
+        border-radius: 999px; font-size: 0.7rem; color: var(--muted);
+      }
+    </style>
+  </body>
+</html>
