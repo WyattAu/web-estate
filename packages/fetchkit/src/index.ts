@@ -70,11 +70,28 @@ export interface FetchKitOutcome<T> {
   exhausted: boolean;
 }
 
+export interface JsonOutcome<T> {
+  ok: boolean;
+  status: number;
+  /** Parsed JSON body on 2xx with a parseable body; undefined otherwise. */
+  body?: T;
+  /** Error detail for non-2xx or unparseable bodies. */
+  error?: string;
+  attempts: number;
+  exhausted: boolean;
+}
+
 export interface FetchKit {
   /** Fetch and decode an ApiResponse envelope; errors become envelopes. */
   fetchEnvelope<T = unknown>(url: string, init?: RequestInit): Promise<ApiResponse<T>>;
   /** Same, with retry metadata for callers that need it. */
   fetchEnvelopeWithMeta<T = unknown>(url: string, init?: RequestInit): Promise<FetchKitOutcome<T>>;
+  /**
+   * Retrying fetch for services that predate the envelope convention:
+   * same loop, no decode. 2xx with a parseable body returns it; anything
+   * else is a non-ok outcome carrying the status (no envelopes invented).
+   */
+  fetchJsonWithMeta<T = unknown>(url: string, init?: RequestInit): Promise<JsonOutcome<T>>;
 }
 
 export interface FetchKitOptions {
@@ -105,6 +122,27 @@ export function createFetchKit(options: FetchKitOptions = {}): FetchKit {
   const config: RetryConfig = { ...RETRY_DEFAULTS, ...options.retry };
   const doFetch = options.fetchImpl ?? ((u: string, i?: RequestInit) => fetch(u, i));
 
+  /** Raw attempt: fetch, retryability classification, best-effort JSON. */
+  async function attemptRaw(
+    url: string,
+    init?: RequestInit,
+  ): Promise<{ res?: Response; json?: unknown; retryable: boolean; error?: string }> {
+    let res: Response;
+    try {
+      res = await doFetch(url, init);
+    } catch (error) {
+      // Transport errors are retryable (mirrors io-error retryability).
+      if (error instanceof DOMException && error.name === "AbortError") throw error;
+      return { retryable: true, error: `network error: ${String(error)}` };
+    }
+    if (!res.ok) {
+      const json: unknown = await res.json().catch(() => undefined);
+      return { res, json, retryable: isRetryableStatus(res.status), error: res.statusText };
+    }
+    const json: unknown = await res.json().catch(() => undefined);
+    return { res, json, retryable: false };
+  }
+
   async function attemptOnce<T>(
     url: string,
     init?: RequestInit,
@@ -112,23 +150,19 @@ export function createFetchKit(options: FetchKitOptions = {}): FetchKit {
     envelope: ApiResponse<T>;
     retryable: boolean;
   }> {
-    let res: Response;
-    try {
-      res = await doFetch(url, init);
-    } catch (error) {
-      // Transport errors are retryable (mirrors io-error retryability).
-      if (error instanceof DOMException && error.name === "AbortError") throw error;
+    const raw = await attemptRaw(url, init);
+    if (!raw.res) {
       return {
-        envelope: envelopeError("Unavailable", "network error", {
-          cause: String(error),
+        envelope: envelopeError("Unavailable", raw.error ?? "network error", {
+          cause: raw.error,
+          url,
         }),
         retryable: true,
       };
     }
 
-    if (res.ok) {
-      const body: unknown = await res.json().catch(() => undefined);
-      const decoded = decodeEnvelope<T>(body);
+    if (raw.res.ok) {
+      const decoded = decodeEnvelope<T>(raw.json);
       if (!decoded.ok) {
         // A 2xx body that is not an envelope is a protocol violation:
         // surface it as an Internal error envelope, not a crash.
@@ -140,12 +174,11 @@ export function createFetchKit(options: FetchKitOptions = {}): FetchKit {
       return { envelope: decoded.envelope, retryable: false };
     }
 
-    const status = res.status;
+    const status = raw.res.status;
     const name = errcodeForStatus(status);
     // Prefer the server's own error envelope (axum-stack sends one).
-    const body: unknown = await res.json().catch(() => undefined);
-    if (body && typeof body === "object") {
-      const decoded = decodeEnvelope<T>(body);
+    if (raw.json && typeof raw.json === "object") {
+      const decoded = decodeEnvelope<T>(raw.json);
       if (decoded.ok && !decoded.envelope.success) {
         return { envelope: decoded.envelope, retryable: isRetryableStatus(status) };
       }
@@ -154,6 +187,36 @@ export function createFetchKit(options: FetchKitOptions = {}): FetchKit {
       envelope: envelopeError(errcode(name).code, errcode(name).reason, { status, url }),
       retryable: isRetryableStatus(status),
     };
+  }
+
+  async function fetchJsonWithMeta<T>(
+    url: string,
+    init?: RequestInit,
+  ): Promise<JsonOutcome<T>> {
+    let attempts = 0;
+    for (let attempt = 0; attempt <= config.maxRetries; attempt++) {
+      attempts = attempt + 1;
+      const raw = await attemptRaw(url, init);
+      const last = attempt === config.maxRetries;
+      if (raw.res?.ok) {
+        if (raw.json === undefined) {
+          return { ok: false, status: raw.res.status, error: "body is not JSON", attempts, exhausted: false };
+        }
+        return { ok: true, status: raw.res.status, body: raw.json as T, attempts, exhausted: false };
+      }
+      if (!raw.retryable || last) {
+        const outcome: JsonOutcome<T> = {
+          ok: false,
+          status: raw.res?.status ?? 0,
+          attempts,
+          exhausted: raw.retryable && last,
+        };
+        if (raw.error !== undefined) outcome.error = raw.error;
+        return outcome;
+      }
+      await sleep(delayForAttempt(config, attempt), options.signal);
+    }
+    throw new Error("fetchkit: retry loop escaped");
   }
 
   async function fetchEnvelopeWithMeta<T>(
@@ -182,5 +245,6 @@ export function createFetchKit(options: FetchKitOptions = {}): FetchKit {
       return envelope;
     },
     fetchEnvelopeWithMeta,
+    fetchJsonWithMeta,
   };
 }
