@@ -122,6 +122,14 @@
         "typescript": "^5.8.0",
       },
     },
+    "packages/money": {
+      "name": "@est/money",
+      "version": "0.1.0",
+      "devDependencies": {
+        "@types/bun": "^1.2.0",
+        "typescript": "^5.8.0",
+      },
+    },
     "packages/otel": {
       "name": "@est/otel",
       "version": "0.1.0",
@@ -349,6 +357,8 @@
     "@est/flags": ["@est/flags@workspace:packages/flags"],
 
     "@est/i18n": ["@est/i18n@workspace:packages/i18n"],
+
+    "@est/money": ["@est/money@workspace:packages/money"],
 
     "@est/otel": ["@est/otel@workspace:packages/otel"],
 
