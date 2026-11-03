@@ -1,0 +1,69 @@
+{
+  "suite": "crdt",
+  "wire": 1,
+  "source_of_truth": "WyattAu/crdts-kit src/text.rs RgaString integration (origin_left + id-skip, tombstone deletes); convergence scenarios are normative",
+  "scenarios": [
+    {
+      "name": "concurrent same-origin inserts converge",
+      "groups": [
+        {
+          "mode": "parallel",
+          "sites": [
+            [{ "op": "insert", "index": 0, "content": "A" }],
+            [{ "op": "insert", "index": 0, "content": "B" }]
+          ],
+          "expected": "BA"
+        }
+      ]
+    },
+    {
+      "name": "interleaved typing chains converge",
+      "groups": [
+        {
+          "mode": "parallel",
+          "sites": [
+            [{ "op": "insert", "index": 0, "content": "Hello" }],
+            [{ "op": "insert", "index": 0, "content": "World" }]
+          ],
+          "expected": "WorldHello"
+        }
+      ]
+    },
+    {
+      "name": "delete plus concurrent append",
+      "groups": [
+        {
+          "mode": "sequential",
+          "sites": [[{ "op": "insert", "index": 0, "content": "Hello" }]],
+          "expected": "Hello"
+        },
+        {
+          "mode": "parallel",
+          "sites": [
+            [{ "site": 1, "op": "delete", "index": 1, "len": 3 }],
+            [{ "site": 2, "op": "insert", "index": 5, "content": "!" }]
+          ],
+          "expected": "Ho!"
+        }
+      ]
+    },
+    {
+      "name": "tombstones preserve concurrent insert position",
+      "groups": [
+        {
+          "mode": "parallel",
+          "sites": [[{ "op": "insert", "index": 0, "content": "AB" }]],
+          "expected": "AB"
+        },
+        {
+          "mode": "parallel",
+          "sites": [
+            [{ "site": 2, "op": "delete", "index": 0, "len": 1 }],
+            [{ "site": 3, "op": "insert", "index": 1, "content": "X" }]
+          ],
+          "expected": "XB"
+        }
+      ]
+    }
+  ]
+}

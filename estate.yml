@@ -31,6 +31,21 @@ owner: WyattAu
 npm_scope: "@est"
 
 packages:
+  crdt:
+    npm: "@est/crdt"
+    version: "0.1.0"
+    area: conc
+    status: support
+    mirrors: "crdts-kit"
+    notes: "Scaffolded by new-kit; replace with a real description."
+    docs:
+      tier: k
+      specs: ["packages/crdt/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: 2026-11-03
+
   i18n:
     npm: "@est/i18n"
     version: "0.1.0"
