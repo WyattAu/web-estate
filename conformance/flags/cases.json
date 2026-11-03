@@ -4,12 +4,52 @@
   "source_of_truth": "WyattAu/flagsd src/lib.rs evaluate route ({name, enabled}); fail-closed policy is normative here and in the SPEC",
   "defaults": { "beta-ui": true },
   "cases": [
-    { "kind": "evaluate", "name": "remote enabled wins", "flag": "beta-ui", "status": 200, "body": { "name": "beta-ui", "enabled": true }, "expect": { "enabled": true, "source": "remote" } },
-    { "kind": "evaluate", "name": "remote disabled wins over defaults", "flag": "beta-ui", "status": 200, "body": { "name": "beta-ui", "enabled": false }, "expect": { "enabled": false, "source": "remote" } },
-    { "kind": "evaluate", "name": "unknown flag fails closed to its default", "flag": "beta-ui", "status": 404, "body": { "error": "not found" }, "expect": { "enabled": true, "source": "default" } },
-    { "kind": "evaluate", "name": "unregistered flag fails closed to false", "flag": "unknown-flag", "status": 404, "body": { "error": "not found" }, "expect": { "enabled": false, "source": "default" } },
-    { "kind": "evaluate", "name": "malformed body fails closed", "flag": "beta-ui", "status": 200, "body": { "nope": 1 }, "expect": { "enabled": true, "source": "default" } },
-    { "kind": "url", "flag": "beta-ui", "subject": { "user": "u1", "org": "acme" }, "expected_query": "user=u1&org=acme" },
+    {
+      "kind": "evaluate",
+      "name": "remote enabled wins",
+      "flag": "beta-ui",
+      "status": 200,
+      "body": { "name": "beta-ui", "enabled": true },
+      "expect": { "enabled": true, "source": "remote" }
+    },
+    {
+      "kind": "evaluate",
+      "name": "remote disabled wins over defaults",
+      "flag": "beta-ui",
+      "status": 200,
+      "body": { "name": "beta-ui", "enabled": false },
+      "expect": { "enabled": false, "source": "remote" }
+    },
+    {
+      "kind": "evaluate",
+      "name": "unknown flag fails closed to its default",
+      "flag": "beta-ui",
+      "status": 404,
+      "body": { "error": "not found" },
+      "expect": { "enabled": true, "source": "default" }
+    },
+    {
+      "kind": "evaluate",
+      "name": "unregistered flag fails closed to false",
+      "flag": "unknown-flag",
+      "status": 404,
+      "body": { "error": "not found" },
+      "expect": { "enabled": false, "source": "default" }
+    },
+    {
+      "kind": "evaluate",
+      "name": "malformed body fails closed",
+      "flag": "beta-ui",
+      "status": 200,
+      "body": { "nope": 1 },
+      "expect": { "enabled": true, "source": "default" }
+    },
+    {
+      "kind": "url",
+      "flag": "beta-ui",
+      "subject": { "user": "u1", "org": "acme" },
+      "expected_query": "user=u1&org=acme"
+    },
     { "kind": "url", "flag": "beta-ui", "subject": {}, "expected_query": "" },
     { "kind": "url", "flag": "beta-ui", "subject": { "user": "u1" }, "expected_query": "user=u1" },
     { "kind": "url", "flag": "beta-ui", "subject": { "org": "acme" }, "expected_query": "org=acme" }

@@ -26,11 +26,7 @@ const suite = cases as unknown as {
 
 const BASE = "https://flagsd.test";
 
-function clientFor(
-  status: number,
-  body: Record<string, unknown>,
-  captured: { url?: string } = {},
-) {
+function clientFor(status: number, body: Record<string, unknown>, captured: { url?: string } = {}) {
   return createFlagsClient({
     baseUrl: BASE,
     defaults: suite.defaults,

@@ -193,19 +193,11 @@
       "kind": "encode",
       "name": "success encode omits error and pagination",
       "construct": {
-        "data": [
-          1,
-          2,
-          3
-        ]
+        "data": [1, 2, 3]
       },
       "expected": {
         "success": true,
-        "data": [
-          1,
-          2,
-          3
-        ]
+        "data": [1, 2, 3]
       }
     }
   ]

@@ -36,11 +36,7 @@ export interface FlagsClient {
 }
 
 /** Build the evaluation URL; subject params are optional and ordered. */
-export function evaluateUrl(
-  baseUrl: string,
-  name: string,
-  subject?: FlagsSubject,
-): string {
+export function evaluateUrl(baseUrl: string, name: string, subject?: FlagsSubject): string {
   const params = new URLSearchParams();
   if (subject?.user) params.set("user", subject.user);
   if (subject?.org) params.set("org", subject.org);
@@ -50,9 +46,7 @@ export function evaluateUrl(
 
 function isFlagBody(v: unknown): v is { name?: unknown; enabled: boolean } {
   return (
-    typeof v === "object" &&
-    v !== null &&
-    typeof (v as { enabled?: unknown }).enabled === "boolean"
+    typeof v === "object" && v !== null && typeof (v as { enabled?: unknown }).enabled === "boolean"
   );
 }
 

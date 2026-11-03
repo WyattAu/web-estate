@@ -9,12 +9,12 @@ policy is normative here.
 
 ## Truth table
 
-| Concern | Truth |
-|---|---|
-| Evaluate wire shape | `conformance/flags/cases.json` (evaluate cases) |
-| Subject query building | `conformance/flags/cases.json` (url cases) |
-| Fail-closed policy | `conformance/flags/cases.json` + SPEC REQ-3 |
-| Transport/retry | `@est/fetchkit` (`fetchJsonWithMeta`; flagsd predates envelopes) |
+| Concern                | Truth                                                            |
+| ---------------------- | ---------------------------------------------------------------- |
+| Evaluate wire shape    | `conformance/flags/cases.json` (evaluate cases)                  |
+| Subject query building | `conformance/flags/cases.json` (url cases)                       |
+| Fail-closed policy     | `conformance/flags/cases.json` + SPEC REQ-3                      |
+| Transport/retry        | `@est/fetchkit` (`fetchJsonWithMeta`; flagsd predates envelopes) |
 
 ## Requirements
 

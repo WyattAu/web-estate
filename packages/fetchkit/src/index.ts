@@ -189,10 +189,7 @@ export function createFetchKit(options: FetchKitOptions = {}): FetchKit {
     };
   }
 
-  async function fetchJsonWithMeta<T>(
-    url: string,
-    init?: RequestInit,
-  ): Promise<JsonOutcome<T>> {
+  async function fetchJsonWithMeta<T>(url: string, init?: RequestInit): Promise<JsonOutcome<T>> {
     let attempts = 0;
     for (let attempt = 0; attempt <= config.maxRetries; attempt++) {
       attempts = attempt + 1;
@@ -200,9 +197,21 @@ export function createFetchKit(options: FetchKitOptions = {}): FetchKit {
       const last = attempt === config.maxRetries;
       if (raw.res?.ok) {
         if (raw.json === undefined) {
-          return { ok: false, status: raw.res.status, error: "body is not JSON", attempts, exhausted: false };
+          return {
+            ok: false,
+            status: raw.res.status,
+            error: "body is not JSON",
+            attempts,
+            exhausted: false,
+          };
         }
-        return { ok: true, status: raw.res.status, body: raw.json as T, attempts, exhausted: false };
+        return {
+          ok: true,
+          status: raw.res.status,
+          body: raw.json as T,
+          attempts,
+          exhausted: false,
+        };
       }
       if (!raw.retryable || last) {
         const outcome: JsonOutcome<T> = {
