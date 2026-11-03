@@ -31,6 +31,21 @@ owner: WyattAu
 npm_scope: "@est"
 
 packages:
+  i18n:
+    npm: "@est/i18n"
+    version: "0.1.0"
+    area: app
+    status: support
+    mirrors: "i18n-kit"
+    notes: "Scaffolded by new-kit; replace with a real description."
+    docs:
+      tier: k
+      specs: ["packages/i18n/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: 2026-11-03
+
   flags:
     npm: "@est/flags"
     version: "0.1.0"

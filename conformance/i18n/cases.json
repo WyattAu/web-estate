@@ -1,0 +1,96 @@
+{
+  "suite": "i18n",
+  "wire": 1,
+  "source_of_truth": "WyattAu/i18n-kit: locale.rs normalize, plural.rs rules/suffixes, translator.rs fallback chain + interpolate",
+  "catalog": {
+    "en": {
+      "nav.home": "Home",
+      "items.zero": "{count} items",
+      "items.one": "{count} item",
+      "items.other": "{count} items",
+      "unclosed": "oops {count"
+    },
+    "en-GB": { "nav.home": "Home" },
+    "de": { "nav.home": "Startseite" },
+    "de-DE": { "nav.home": "Startseite" }
+  },
+  "default_locale": "en",
+  "cases": [
+    { "kind": "normalize", "input": "en-us", "expected": "en-US" },
+    { "kind": "normalize", "input": "EN", "expected": "en" },
+    { "kind": "normalize", "input": "zh-hans-cn", "expected": "zh-Hans-CN" },
+    { "kind": "normalize", "input": "es-419", "expected": "es-419" },
+    { "kind": "normalize", "input": "sr-Latn-RS", "expected": "sr-Latn-RS" },
+    { "kind": "normalize_invalid", "input": "", "reason": "empty" },
+    { "kind": "normalize_invalid", "input": "eñ", "reason": "non-ascii" },
+    { "kind": "normalize_invalid", "input": "x-FOO", "reason": "language subtag too short" },
+    { "kind": "normalize_invalid", "input": "english-US", "reason": "language subtag too long" },
+    { "kind": "plural", "rule": "for_count", "count": 0, "expected_suffix": "other" },
+    { "kind": "plural", "rule": "for_count", "count": 1, "expected_suffix": "one" },
+    { "kind": "plural", "rule": "for_count", "count": 2, "expected_suffix": "other" },
+    { "kind": "plural", "rule": "with_zero", "count": 0, "expected_suffix": "zero" },
+    { "kind": "plural", "rule": "with_zero", "count": 1, "expected_suffix": "one" },
+    { "kind": "plural", "rule": "with_zero", "count": 2, "expected_suffix": "other" },
+    {
+      "kind": "translate",
+      "name": "exact locale match",
+      "locale": "en",
+      "key": "nav.home",
+      "expected": "Home"
+    },
+    {
+      "kind": "translate",
+      "name": "language fallback to primary subtag",
+      "locale": "en-GB",
+      "key": "items.other",
+      "params": { "count": "5" },
+      "expected": "5 items"
+    },
+    {
+      "kind": "translate",
+      "name": "language fallback finds de before default",
+      "locale": "de-DE",
+      "key": "nav.home",
+      "expected": "Startseite"
+    },
+    {
+      "kind": "translate",
+      "name": "default locale fallback across languages",
+      "locale": "fr",
+      "key": "nav.home",
+      "expected": "Home"
+    },
+    {
+      "kind": "translate",
+      "name": "same-language default skip returns key",
+      "locale": "en-GB",
+      "key": "no.such",
+      "expected": "no.such"
+    },
+    {
+      "kind": "translate",
+      "name": "interpolation replaces named slots",
+      "locale": "en",
+      "key": "items.other",
+      "params": { "count": "3" },
+      "expected": "3 items"
+    },
+    {
+      "kind": "translate",
+      "name": "unmatched placeholder becomes empty",
+      "locale": "en",
+      "key": "items.one",
+      "expected": " item"
+    },
+    {
+      "kind": "translate",
+      "name": "unclosed brace stays literal",
+      "locale": "en",
+      "key": "unclosed",
+      "expected": "oops {count"
+    },
+    { "kind": "exists", "locale": "en-GB", "key": "nav.home", "expected": true },
+    { "kind": "exists", "locale": "fr", "key": "nav.home", "expected": true },
+    { "kind": "exists", "locale": "fr", "key": "no.such", "expected": false }
+  ]
+}
