@@ -55,6 +55,12 @@ STARTED (2026-11-01):
   one retry implementation, no duplication).
 - `@est/fetchkit` grew the decode-agnostic raw-JSON path for pre-envelope
   services.
+- `@est/i18n` shipped and fixture-pinned: mirrors `i18n-kit`'s locale
+  normalization (BCP 47 casing rules), catalog, plural suffixes
+  (`zero`/`one`/`other`), translator fallback chain (exact locale ->
+  primary language -> default when languages differ -> key), and
+  `{placeholder}` interpolation (unmatched slot -> empty, unclosed brace
+  stays literal). One catalog object serves every locale; apps embed it.
 
 Pending, in order:
 
