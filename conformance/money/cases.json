@@ -1,0 +1,114 @@
+{
+  "suite": "money",
+  "wire": 1,
+  "source_of_truth": "WyattAu/money src/amount.rs (allocate largest-remainder + rounding policies; golden vectors from the crate's own tests)",
+  "allocate_cases": [
+    {
+      "name": "even split largest remainder",
+      "amount": "100.00",
+      "currency": "USD",
+      "ratios": ["1", "1", "1"],
+      "expected": ["33.34", "33.33", "33.33"]
+    },
+    {
+      "name": "ratio weights not unity",
+      "amount": "10.00",
+      "currency": "USD",
+      "ratios": ["1", "2"],
+      "expected": ["3.33", "6.67"]
+    },
+    {
+      "name": "single ratio is identity",
+      "amount": "19.99",
+      "currency": "USD",
+      "ratios": ["0.123"],
+      "expected": ["19.99"]
+    },
+    {
+      "name": "scale three preserved",
+      "amount": "0.100",
+      "currency": "USD",
+      "ratios": ["1", "1", "1"],
+      "expected": ["0.034", "0.033", "0.033"]
+    },
+    {
+      "name": "zero-decimal currency",
+      "amount": "100",
+      "currency": "JPY",
+      "ratios": ["1", "1", "1"],
+      "expected": ["34", "33", "33"]
+    },
+    {
+      "name": "negative amount sums exactly",
+      "amount": "-100.00",
+      "currency": "USD",
+      "ratios": ["1", "1", "1"],
+      "expected": ["-33.33", "-33.33", "-33.34"]
+    },
+    {
+      "name": "zero amount",
+      "amount": "0.00",
+      "currency": "USD",
+      "ratios": ["1", "2"],
+      "expected": ["0.00", "0.00"]
+    },
+    {
+      "name": "ties break by ratio order",
+      "amount": "0.02",
+      "currency": "USD",
+      "ratios": ["1", "1", "1"],
+      "expected": ["0.01", "0.01", "0.00"]
+    },
+    {
+      "name": "zero ratio is allowed",
+      "amount": "10.00",
+      "currency": "USD",
+      "ratios": ["0", "1", "1"],
+      "expected": ["0.00", "5.00", "5.00"]
+    },
+    {
+      "name": "negative ratio rejected",
+      "amount": "10.00",
+      "currency": "USD",
+      "ratios": ["-1", "2"],
+      "error": "invalid-amount"
+    },
+    {
+      "name": "all-zero ratios rejected",
+      "amount": "10.00",
+      "currency": "USD",
+      "ratios": ["0", "0"],
+      "error": "invalid-amount"
+    },
+    {
+      "name": "empty ratios rejected",
+      "amount": "10.00",
+      "currency": "USD",
+      "ratios": [],
+      "error": "invalid-amount"
+    }
+  ],
+  "round_cases": [
+    { "amount": "2.5", "currency": "USD", "places": 0, "policy": "HalfUp", "expected": "3" },
+    { "amount": "-2.5", "currency": "USD", "places": 0, "policy": "HalfUp", "expected": "-3" },
+    { "amount": "2.5", "currency": "USD", "places": 0, "policy": "HalfEven", "expected": "2" },
+    { "amount": "3.5", "currency": "USD", "places": 0, "policy": "HalfEven", "expected": "4" },
+    { "amount": "2.5", "currency": "USD", "places": 0, "policy": "HalfDown", "expected": "2" },
+    { "amount": "-2.5", "currency": "USD", "places": 0, "policy": "HalfDown", "expected": "-2" },
+    { "amount": "-3.7", "currency": "USD", "places": 0, "policy": "Floor", "expected": "-4" },
+    { "amount": "3.7", "currency": "USD", "places": 0, "policy": "Floor", "expected": "3" },
+    { "amount": "2.345", "currency": "USD", "places": 2, "policy": "HalfEven", "expected": "2.34" },
+    { "amount": "2.355", "currency": "USD", "places": 2, "policy": "HalfEven", "expected": "2.36" }
+  ],
+  "sign_cases": [
+    { "amount": "-10.50", "currency": "USD", "op": "abs", "expected": "10.50" },
+    { "amount": "10.50", "currency": "USD", "op": "negate", "expected": "-10.50" },
+    { "amount": "-10.50", "currency": "USD", "op": "is_negative", "expected": true },
+    { "amount": "0.00", "currency": "USD", "op": "is_zero", "expected": true }
+  ],
+  "parse_error_cases": [
+    { "amount": "abc", "currency": "USD" },
+    { "amount": "", "currency": "USD" },
+    { "amount": "1.2.3", "currency": "USD" }
+  ]
+}

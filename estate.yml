@@ -31,6 +31,21 @@ owner: WyattAu
 npm_scope: "@est"
 
 packages:
+  money:
+    npm: "@est/money"
+    version: "0.1.0"
+    area: money
+    status: support
+    mirrors: "money"
+    notes: "Scaffolded by new-kit; replace with a real description."
+    docs:
+      tier: k
+      specs: ["packages/money/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: 2026-11-03
+
   otel:
     npm: "@est/otel"
     version: "0.1.0"
