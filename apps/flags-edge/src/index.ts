@@ -2,8 +2,6 @@
 // deployed ledger's flags client has a live service to talk to. Wire
 // compatible with flagsd's GET /evaluate/{name}?user=&org= -> {name, enabled}.
 
-type Env = Record<string, unknown>;
-
 // Static flag table; flip values here and redeploy.
 const FLAGS: Record<string, boolean> = {
   "ledger-beta": true,
