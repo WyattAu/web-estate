@@ -66,3 +66,22 @@ fn parse_policy(policy: &str) -> Result<decimal_money::RoundingPolicy, String> {
 pub fn fixture_json() -> &'static str {
     CASES
 }
+
+// ---- wasm boundary: JSON in, JSON out (the TS side owns the schema) ----
+
+#[wasm_bindgen]
+pub fn allocate_json(
+    value: &str,
+    currency: &str,
+    ratios_json: &str,
+) -> Result<String, JsValue> {
+    let ratios: Vec<String> =
+        serde_json::from_str(ratios_json).map_err(|e| JsValue::from_str(&e.to_string()))?;
+    let parts = allocate(value, currency, &ratios)?;
+    serde_json::to_string(&parts).map_err(|e| JsValue::from_str(&e.to_string()))
+}
+
+#[wasm_bindgen]
+pub fn round_json(value: &str, currency: &str, places: u32, policy: &str) -> Result<String, JsValue> {
+    round(value, currency, places, policy).map_err(|e| JsValue::from_str(&e.to_string()))
+}

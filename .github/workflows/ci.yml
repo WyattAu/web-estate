@@ -34,8 +34,15 @@ jobs:
       # Artifact build; the TS side works without it (fallback twin).
       - run: cargo install wasm-pack --locked || true
       - run: bash scripts/build-wasm.sh
-      - run: bun test packages/search-wasm
+      - run: wasm-pack build --target web --out-dir pkg --release
+        working-directory: crates/crdt-wasm
+      - run: wasm-pack build --target web --out-dir pkg --release
+        working-directory: crates/money-wasm
+      - run: bun test packages/search-wasm packages/money
       - uses: actions/upload-artifact@v4
         with:
-          name: search-wasm-pkg
-          path: packages/search-wasm/pkg/
+          name: wasm-pkgs
+          path: |
+            packages/search-wasm/pkg/
+            crates/crdt-wasm/pkg/
+            crates/money-wasm/pkg/
