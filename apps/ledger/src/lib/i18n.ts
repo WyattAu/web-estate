@@ -52,4 +52,6 @@ export function tt(key: keyof (typeof labels)["en"]): string {
   return translator.translate(locale(), key);
 }
 
+export { translator as i18n };
+
 export { translator };
