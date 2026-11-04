@@ -31,6 +31,48 @@ owner: WyattAu
 npm_scope: "@est"
 
 packages:
+  math:
+    npm: "@est/math"
+    version: "0.1.0"
+    area: docs
+    status: support
+    notes: "Scaffolded by new-kit; replace with a real description."
+    docs:
+      tier: k
+      specs: ["packages/math/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: 2026-11-04
+
+  deploy-targets:
+    npm: "@est/deploy-targets"
+    version: "0.1.0"
+    area: infra
+    status: support
+    notes: "Scaffolded by new-kit; replace with a real description."
+    docs:
+      tier: k
+      specs: ["packages/deploy-targets/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: 2026-11-04
+
+  islands:
+    npm: "@est/islands"
+    version: "0.1.0"
+    area: ui
+    status: support
+    notes: "Scaffolded by new-kit; replace with a real description."
+    docs:
+      tier: k
+      specs: ["packages/islands/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: 2026-11-04
+
   content-guard:
     npm: "@est/content-guard"
     version: "0.1.0"

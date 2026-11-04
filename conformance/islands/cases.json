@@ -1,0 +1,104 @@
+{
+  "suite": "islands",
+  "wire": 1,
+  "source_of_truth": "WyattAu/starlight-interactive-islands src/registry.ts + src/utils.ts",
+  "register_cases": [
+    {
+      "name": "Counter",
+      "input": { "component": "./Counter.tsx" },
+      "expected": { "framework": "react", "hydration": "visible" }
+    },
+    {
+      "name": "Chart",
+      "input": { "component": "./Chart.svelte", "hydration": "idle" },
+      "expected": { "framework": "svelte", "hydration": "idle" }
+    },
+    {
+      "name": "SolidGauge",
+      "input": { "component": "./gauge/solid/Gauge.solid.tsx" },
+      "expected": { "framework": "solid-js", "hydration": "visible" }
+    },
+    {
+      "name": "Viz",
+      "input": { "component": "./Viz.vue", "hydration": "media" },
+      "error": "mediaQuery"
+    },
+    {
+      "name": "lowercase name rejected",
+      "input": { "component": "./x.tsx", "name": "counter" },
+      "error": "Invalid component name"
+    },
+    {
+      "name": "duplicate rejected",
+      "input": { "component": "./Counter.tsx", "name": "Counter" },
+      "error": "already registered"
+    }
+  ],
+  "validate_cases": [
+    {
+      "name": "only requires clientOnlyFramework",
+      "component": {
+        "name": "Only",
+        "component": "./Only.tsx",
+        "framework": "react",
+        "hydration": "only"
+      },
+      "valid": false,
+      "error_contains": "clientOnlyFramework"
+    },
+    {
+      "name": "mediaQuery without media hydration",
+      "component": {
+        "name": "Bad",
+        "component": "./Bad.tsx",
+        "framework": "react",
+        "hydration": "load",
+        "mediaQuery": "(max-width: 1px)"
+      },
+      "valid": false,
+      "error_contains": "mediaQuery is only applicable"
+    },
+    {
+      "name": "missing file flagged by the fileExists probe",
+      "component": {
+        "name": "Ghost",
+        "component": "./Ghost.tsx",
+        "framework": "react",
+        "hydration": "visible"
+      },
+      "file_exists": false,
+      "valid": false,
+      "error_contains": "Component file not found"
+    }
+  ],
+  "generate_cases": [
+    {
+      "component": {
+        "name": "Counter",
+        "component": "./Counter.tsx",
+        "framework": "react",
+        "hydration": "visible"
+      },
+      "import": "import Counter from './Counter.tsx';",
+      "wrapper": "<div>\n  <Counter client:visible />\n</div>"
+    },
+    {
+      "component": {
+        "name": "Only",
+        "component": "./Only.tsx",
+        "framework": "solid-js",
+        "hydration": "only",
+        "clientOnlyFramework": "solid-js"
+      },
+      "import": "import Only from './Only.tsx';",
+      "wrapper": "<div>\n  <Only client:only=\"solid-js\" />\n</div>"
+    }
+  ],
+  "framework_detect_cases": [
+    { "path": "/x/src/solid/Gauge.solid.tsx", "expected": "solid-js" },
+    { "path": "/x/Chart.svelte", "expected": "svelte" },
+    { "path": "/x/C.vue", "expected": "vue" },
+    { "path": "/x/C.tsx", "expected": "react" },
+    { "path": "/x/C.css", "expected": null }
+  ]
+}
