@@ -1,0 +1,76 @@
+{
+  "suite": "content-guard",
+  "wire": 1,
+  "source_of_truth": "WyattAu/starlight-content-guard validators (frontmatter via gray-matter + zod) + SPEC-CORE em-dash rule",
+  "documents": [
+    {
+      "name": "valid",
+      "content": "---\ntitle: Estate handbook\ndescription: The contract for the web estate workspace and its kits.\n---\n\nBody text.\n"
+    },
+    {
+      "name": "missing title",
+      "content": "---\ndescription: A description that is long enough to pass.\n---\n\nBody.\n"
+    },
+    {
+      "name": "empty title",
+      "content": "---\ntitle: \"\"\ndescription: A description that is long enough to pass.\n---\n\nBody.\n"
+    },
+    {
+      "name": "missing description",
+      "content": "---\ntitle: Only a title\n---\n\nBody.\n"
+    },
+    {
+      "name": "short description",
+      "content": "---\ntitle: T\ndescription: Too short.\n---\n\nBody.\n"
+    },
+    {
+      "name": "em-dash in body",
+      "content": "---\ntitle: T\ndescription: A description that is long enough to pass.\n---\n\nUse this \u2014 and that.\n"
+    },
+    {
+      "name": "malformed frontmatter",
+      "content": "---\ntitle: [unclosed\n---\n\nBody.\n"
+    }
+  ],
+  "frontmatter_expectations": [
+    {
+      "doc": "valid",
+      "issues": []
+    },
+    {
+      "doc": "missing title",
+      "severity": "error",
+      "validator": "frontmatter"
+    },
+    {
+      "doc": "empty title",
+      "severity": "error",
+      "validator": "frontmatter"
+    },
+    {
+      "doc": "missing description",
+      "severity": "error",
+      "validator": "frontmatter"
+    },
+    {
+      "doc": "short description",
+      "severity": "warning",
+      "validator": "frontmatter"
+    },
+    {
+      "doc": "malformed frontmatter",
+      "severity": "error",
+      "validator": "frontmatter"
+    }
+  ],
+  "emdash_expectations": [
+    {
+      "doc": "valid",
+      "issues": 0
+    },
+    {
+      "doc": "em-dash in body",
+      "issues": 1
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "suite": "starlight-plugin",
+  "wire": 1,
+  "source_of_truth": "WyattAu/starlight-kit src/shared-config.ts mergeConfigs + src/plugin-factory.ts createStarlightPlugin",
+  "merge_cases": [
+    {
+      "name": "defaults stand alone",
+      "overrides": [],
+      "expected": { "base": "/", "features": {}, "labels": {} }
+    },
+    {
+      "name": "scalar override replaces",
+      "overrides": [{ "base": "/docs" }],
+      "expected": { "base": "/docs", "features": {}, "labels": {} }
+    },
+    {
+      "name": "features merge per key",
+      "overrides": [{ "features": { "a": true } }, { "features": { "b": false } }],
+      "expected": { "base": "/", "features": { "a": true, "b": false }, "labels": {} }
+    },
+    {
+      "name": "same feature key overridden wins",
+      "overrides": [{ "features": { "a": true } }, { "features": { "a": false } }],
+      "expected": { "base": "/", "features": { "a": false }, "labels": {} }
+    },
+    {
+      "name": "labels merge per key",
+      "overrides": [{ "labels": { "search": "Search" } }, { "labels": { "skip": "Skip" } }],
+      "expected": { "base": "/", "features": {}, "labels": { "search": "Search", "skip": "Skip" } }
+    },
+    {
+      "name": "unknown keys overwrite (passthrough)",
+      "overrides": [{ "custom": { "x": 1 } }, { "custom": { "y": 2 } }],
+      "expected": { "base": "/", "features": {}, "labels": {}, "custom": { "y": 2 } }
+    }
+  ],
+  "plugin_cases": [
+    {
+      "name": "config:setup applies the merged config",
+      "definition": {
+        "name": "test-plugin",
+        "config": { "base": "/docs", "features": { "beta": true } },
+        "applySets": { "injected": true }
+      },
+      "expectedUpdate": { "injected": true },
+      "expectedMergedBase": "/docs",
+      "expectedMergedFeatures": { "beta": true }
+    }
+  ]
+}

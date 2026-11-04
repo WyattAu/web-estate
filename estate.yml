@@ -31,6 +31,34 @@ owner: WyattAu
 npm_scope: "@est"
 
 packages:
+  content-guard:
+    npm: "@est/content-guard"
+    version: "0.1.0"
+    area: docs
+    status: support
+    notes: "Scaffolded by new-kit; replace with a real description."
+    docs:
+      tier: k
+      specs: ["packages/content-guard/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: 2026-11-04
+
+  starlight-plugin:
+    npm: "@est/starlight-plugin"
+    version: "0.1.0"
+    area: ui
+    status: support
+    notes: "Scaffolded by new-kit; replace with a real description."
+    docs:
+      tier: k
+      specs: ["packages/starlight-plugin/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: 2026-11-04
+
   money:
     npm: "@est/money"
     version: "0.1.0"
