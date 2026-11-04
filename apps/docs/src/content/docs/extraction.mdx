@@ -1,0 +1,51 @@
+---
+title: Extraction candidates
+description: The starlight family survey; what consolidates into estate kits.
+---
+
+DRAFT (survey of 2026-11-02; extraction not started)
+
+## Survey
+
+Eight repos in the starlight family, all `@wyatt/*` at 0.1.0, zero
+cross-imports, five per-repo `types.ts`/`utils.ts` copies with no
+identical hashes (drift already present). `starlight-sites` has no src
+(site content only). `starlight-dse-test` is a test corpus, not a kit.
+
+| Repo | src | Shape |
+|---|---|---|
+| starlight-kit | 3 files | plugin-factory + shared-config: the hub in waiting |
+| starlight-interactive-islands | 6 files | island registry, auto-import, remark pass |
+| starlight-katex | 4 files | remark escape + katex css loader |
+| starlight-progress | 6 files | ReadingProgress + CollapsibleTOC components |
+| starlight-multi-site | 11 files | zod site schema, config merge, deploy emitters |
+| starlight-content-guard | 17 files | content validators (frontmatter, links, math, images, mdx) |
+| starlight-cross-domain-sync | 4 files | theme sync script |
+| shroom-theme | 3 files | theme generator |
+
+## Extraction plan (Rust-estate playbook: pull from consumers, one concern each)
+
+| New kit | Absorbs | Rigor anchor |
+|---|---|---|
+| `@est/starlight-plugin` | starlight-kit factory + multi-site config merge | zod schema fixtures (one definePlugin, validated config) |
+| `@est/content-guard` | content-guard validators (pure functions) | a bad-content fixture corpus (frontmatter/links/math/mdx) |
+| `@est/islands` | interactive-islands registry + auto-import | registry fixtures |
+| `@est/deploy-targets` | multi-site deploy emitters | emitted-output golden files (cloudflare, GH Actions) |
+| `@est/math` | starlight-katex remark + css loader | render fixtures |
+| theme tokens | shroom-theme + cross-domain-sync | CSS custom properties generated from the Rust `theme-kit` (one token source, both ecosystems) |
+
+## Dogfood path
+
+The web estate's own docs app (Starlight) is the first consumer:
+`@est/content-guard` in its CI is the docs gate for MDX, and the docs
+config migrates to `@est/starlight-plugin`. `core` status for each new
+kit starts the day the docs app pins it.
+
+## Scope notes
+
+- npm scope migrates `@wyatt/*` to `@est/*` (one convention across the
+  web estate; the old names are frozen at 0.1.0 and unpublished).
+- `commander`+`picocolors` and `zod` appear in two repos each; the kits
+  absorb them as shared dependencies, not per-repo copies.
+- `starlight-dse-test` stays a corpus; `nightjar`, `WyattsNotes` are
+  content repos, not extraction targets.
