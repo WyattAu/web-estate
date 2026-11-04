@@ -3,6 +3,8 @@
 
 ## Kits
 
+- [@est/content-guard](packages/content-guard/SPEC.md): Scaffolded by new-kit; replace with a real description. (v0.1.0, support)
+- [@est/starlight-plugin](packages/starlight-plugin/SPEC.md): Scaffolded by new-kit; replace with a real description. (v0.1.0, support)
 - [@est/money](packages/money/SPEC.md): Scaffolded by new-kit; replace with a real description. (v0.1.0, support, mirrors money)
 - [@est/otel](packages/otel/SPEC.md): Scaffolded by new-kit; replace with a real description. (v0.1.0, support, mirrors otelkit)
 - [@est/crdt](packages/crdt/SPEC.md): Scaffolded by new-kit; replace with a real description. (v0.1.0, support, mirrors crdts-kit)

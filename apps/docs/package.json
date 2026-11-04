@@ -4,12 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "astro check && astro build",
+    "build": "bun run check-content && astro check && astro build",
     "dev": "astro dev",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check-content": "bun run scripts/check-content.ts"
   },
   "dependencies": {
-    "astro": "^5.0.0"
+    "astro": "^5.0.0",
+    "@est/content-guard": "0.1.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",

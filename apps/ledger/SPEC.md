@@ -19,4 +19,7 @@ estate's money, flags, i18n, envelope, errcode, and fetchkit kits.
 
 ## Deploy
 
-`bun run deploy` (wrangler pages, project `web-estate-ledger`).
+`PUBLIC_FLAGSD_BASE=https://web-estate-flags-edge.wyatt-au.workers.dev bun x astro build` then
+`bun run deploy` (wrangler pages, project `web-estate-ledger`). The flags
+island evaluates against the flags-edge worker; without the env var the
+client fails closed to `flagsd.invalid`.

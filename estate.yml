@@ -108,7 +108,7 @@ packages:
     npm: "@est/i18n"
     version: "0.1.0"
     area: app
-    status: support
+    status: core
     mirrors: "i18n-kit"
     notes: "Scaffolded by new-kit; replace with a real description."
     docs:
@@ -123,7 +123,7 @@ packages:
     npm: "@est/flags"
     version: "0.1.0"
     area: dx
-    status: support
+    status: core
     mirrors: "flagsd"
     notes: "Scaffolded by new-kit; replace with a real description."
     docs:
@@ -138,7 +138,7 @@ packages:
     npm: "@est/fetchkit"
     version: "0.1.0"
     area: dx
-    status: support
+    status: core
     mirrors: "retry-backoff"
     notes: "Scaffolded by new-kit; replace with a real description."
     docs:
