@@ -24,7 +24,7 @@ export default function AllocationIsland() {
       const parts = allocateStrings(total, ratioList);
       const sum = parts.reduce((acc, p) => acc + p.mantissa, 0n);
       setError(null);
-      return { parts, sumExact: sum === total.mantissa, total };
+      return { parts, sum, sumMatches: sum === total.mantissa, total };
     } catch (e) {
       setError(e instanceof MoneyError ? e.message : String(e));
       return null;
@@ -66,12 +66,12 @@ export default function AllocationIsland() {
               {tt("alloc.parts")} | sum ={" "}
               <b>
                 {moneyToString({
-                  mantissa: r.sumExact,
+                  mantissa: r.sum,
                   scale: r.total.scale,
                   currency: CURRENCY,
                 })}
               </b>{" "}
-              <Show when={r.sumExact}>
+              <Show when={r.sumMatches}>
                 <span class="ok">= {moneyToString(r.total)} ✓</span>
               </Show>
             </p>
