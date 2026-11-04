@@ -55,9 +55,7 @@ describe("conformance: starlight-plugin", () => {
         apply: (config) => {
           // The apply callback sees the fully merged config.
           expect(config.base).toBe(c.expectedMergedBase);
-          expect(config.features as Record<string, unknown>).toEqual(
-            c.expectedMergedFeatures,
-          );
+          expect(config.features as Record<string, unknown>).toEqual(c.expectedMergedFeatures);
           return c.definition.applySets;
         },
       });
