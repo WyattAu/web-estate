@@ -2,7 +2,7 @@
 // app. Errors fail the build; warnings report. This is the kit's first
 // consumer (content-guard graduation path).
 
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { validateEmDash, validateFrontmatter } from "@est/content-guard";
 
@@ -33,7 +33,9 @@ for (const file of files) {
   ]) {
     if (issue.severity === "error") errors++;
     else warnings++;
-    console.error(`  ${issue.severity.toUpperCase()} ${issue.file}:${issue.line ?? "?"} ${issue.message}`);
+    console.error(
+      `  ${issue.severity.toUpperCase()} ${issue.file}:${issue.line ?? "?"} ${issue.message}`,
+    );
   }
 }
 
