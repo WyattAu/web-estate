@@ -1,7 +1,7 @@
 // Flags island: the fail-closed flagsd client with the decision source
 // surfaced honestly (source: "default" vs "remote").
 
-import { For, Show, createResource } from "solid-js";
+import { createResource, For, Show } from "solid-js";
 import { flags } from "../lib/flags";
 import { locale, tt } from "../lib/i18n";
 
@@ -30,10 +30,7 @@ export default function FlagsIsland() {
     <div class="card">
       <h3>{tt("flags.heading")}</h3>
       <p class="muted">{tt("flags.desc")}</p>
-      <Show
-        when={!decisions.loading}
-        fallback={<p class="muted">{tt("status.checking")}</p>}
-      >
+      <Show when={!decisions.loading} fallback={<p class="muted">{tt("status.checking")}</p>}>
         <ul>
           <For each={decisions()}>
             {(d) => (

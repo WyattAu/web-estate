@@ -8,4 +8,7 @@ const FALLBACK_FLAGSD = "https://flagsd.invalid";
 export const FLAGSD_BASE = import.meta.env.PUBLIC_FLAGSD_BASE ?? FALLBACK_FLAGSD;
 export const DIRECTORY_API_BASE = "https://web-estate-directory-api.wyatt-au.workers.dev";
 
-export const flags = createFlagsClient({ baseUrl: FLAGSD_BASE, defaults: { "ledger-beta": false } });
+export const flags = createFlagsClient({
+  baseUrl: FLAGSD_BASE,
+  defaults: { "ledger-beta": false },
+});

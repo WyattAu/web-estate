@@ -1,8 +1,8 @@
 // The allocation island: the money kit doing its real job in the browser.
 // Exact BigInt decimals; parts sum preserved; UI shows the invariant.
 
-import { createMemo, createSignal, For, Show } from "solid-js";
 import { allocateStrings, MoneyError, moneyToString, parseMoney } from "@est/money";
+import { createMemo, createSignal, For, Show } from "solid-js";
 import { LOCALES, locale, setLocale, tt } from "../lib/i18n";
 
 const CURRENCY = "USD" as const;
@@ -36,7 +36,9 @@ export default function AllocationIsland() {
       <h2>{tt("alloc.heading")}</h2>
       <p class="muted">{tt("ledger.subtitle")}</p>
 
-      <div style={{ display: "flex", gap: "0.6rem", "flex-wrap": "wrap", "margin-bottom": "0.8rem" }}>
+      <div
+        style={{ display: "flex", gap: "0.6rem", "flex-wrap": "wrap", "margin-bottom": "0.8rem" }}
+      >
         <label style={{ flex: "1 1 12rem" }}>
           <div class="lbl">{tt("alloc.amount")}</div>
           <input value={amount()} onInput={(e) => setAmount(e.currentTarget.value)} />
@@ -47,7 +49,10 @@ export default function AllocationIsland() {
         </label>
         <label style={{ flex: "0 0 8rem" }}>
           <div class="lbl">locale</div>
-          <select value={locale()} onChange={(e) => setLocale(e.currentTarget.value as (typeof LOCALES)[number])}>
+          <select
+            value={locale()}
+            onChange={(e) => setLocale(e.currentTarget.value as (typeof LOCALES)[number])}
+          >
             <For each={LOCALES}>{(l) => <option value={l}>{l}</option>}</For>
           </select>
         </label>

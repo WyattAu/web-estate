@@ -1,7 +1,8 @@
 // Ledger i18n: one catalog object, both locales, via @est/i18n.
 // App-level locale state (Solid signal) + the translator.
-import { createSignal } from "solid-js";
+
 import { createI18n } from "@est/i18n";
+import { createSignal } from "solid-js";
 
 const labels = {
   en: {
@@ -46,12 +47,11 @@ export type LedgerLocale = keyof typeof labels;
 export const LOCALES: LedgerLocale[] = ["en", "de"];
 
 const [locale, setLocale] = createSignal<LedgerLocale>("en");
+
 export { locale, setLocale };
 
 export function tt(key: keyof (typeof labels)["en"]): string {
   return translator.translate(locale(), key);
 }
 
-export { translator as i18n };
-
-export { translator };
+export { translator as i18n, translator };

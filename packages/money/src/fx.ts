@@ -2,7 +2,7 @@
 // identity, inverse), the in-memory provider, and convert (exact
 // multiplication; missing rate is an error, not a fallback).
 
-import { MoneyError, type MoneyAmount, type Currency } from "./index";
+import { type Currency, type MoneyAmount, MoneyError } from "./index";
 
 export interface FxRate {
   from: Currency;
@@ -83,11 +83,7 @@ export function createFxProvider(rates: readonly FxRate[] = []): FxProvider & {
  * Rust convert has no rounding at convert; scales add). Same-currency
  * conversion requires an identity rate in the provider.
  */
-export function convert(
-  amount: MoneyAmount,
-  to: Currency,
-  provider: FxProvider,
-): MoneyAmount {
+export function convert(amount: MoneyAmount, to: Currency, provider: FxProvider): MoneyAmount {
   const rate = provider.getRate(amount.currency, to);
   return {
     mantissa: amount.mantissa * rate.mantissa,
