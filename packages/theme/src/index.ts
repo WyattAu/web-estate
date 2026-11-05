@@ -38,29 +38,14 @@ export class InvalidThemeHexError extends Error {
 export function normalizeHex(role: Role, hex: string): string {
   let s = hex.trim();
   if (s.startsWith("#")) s = s.slice(1);
-  let r = 0;
-  let g = 0;
-  let b = 0;
-  let a = 255;
-  if (s.length === 3) {
-    if (!/^[0-9a-fA-F]{3}$/.test(s)) throw new InvalidThemeHexError(role, "unparseable value");
-    r = parseInt(s[0]! + s[0]!, 16);
-    g = parseInt(s[1]! + s[1]!, 16);
-    b = parseInt(s[2]! + s[2]!, 16);
-  } else if (s.length === 6) {
-    if (!/^[0-9a-fA-F]{6}$/.test(s)) throw new InvalidThemeHexError(role, "unparseable value");
-    r = parseInt(s.slice(0, 2), 16);
-    g = parseInt(s.slice(2, 4), 16);
-    b = parseInt(s.slice(4, 6), 16);
-  } else if (s.length === 8) {
-    if (!/^[0-9a-fA-F]{8}$/.test(s)) throw new InvalidThemeHexError(role, "unparseable value");
-    r = parseInt(s.slice(0, 2), 16);
-    g = parseInt(s.slice(2, 4), 16);
-    b = parseInt(s.slice(4, 6), 16);
-    a = parseInt(s.slice(6, 8), 16);
-  } else {
+  if (s.length === 3) s = [...s].map((c) => c + c).join("");
+  if (!/^[0-9a-fA-F]{6}$/.test(s) && !/^[0-9a-fA-F]{8}$/.test(s)) {
     throw new InvalidThemeHexError(role, "unparseable value");
   }
+  const r = parseInt(s.slice(0, 2), 16);
+  const g = parseInt(s.slice(2, 4), 16);
+  const b = parseInt(s.slice(4, 6), 16);
+  const a = s.length === 8 ? parseInt(s.slice(6, 8), 16) : 255;
   const base = `#${hex2(r)}${hex2(g)}${hex2(b)}`;
   return a === 255 ? base : `${base}${hex2(a)}`;
 }
