@@ -107,6 +107,14 @@
         "typescript": "^5.8.0",
       },
     },
+    "packages/deploy-targets": {
+      "name": "@est/deploy-targets",
+      "version": "0.1.0",
+      "devDependencies": {
+        "@types/bun": "^1.2.0",
+        "typescript": "^5.8.0",
+      },
+    },
     "packages/directory-data": {
       "name": "@est/directory-data",
       "version": "0.1.0",
@@ -159,6 +167,22 @@
     },
     "packages/i18n": {
       "name": "@est/i18n",
+      "version": "0.1.0",
+      "devDependencies": {
+        "@types/bun": "^1.2.0",
+        "typescript": "^5.8.0",
+      },
+    },
+    "packages/islands": {
+      "name": "@est/islands",
+      "version": "0.1.0",
+      "devDependencies": {
+        "@types/bun": "^1.2.0",
+        "typescript": "^5.8.0",
+      },
+    },
+    "packages/math": {
+      "name": "@est/math",
       "version": "0.1.0",
       "devDependencies": {
         "@types/bun": "^1.2.0",
@@ -401,6 +425,8 @@
 
     "@est/crdt": ["@est/crdt@workspace:packages/crdt"],
 
+    "@est/deploy-targets": ["@est/deploy-targets@workspace:packages/deploy-targets"],
+
     "@est/directory-data": ["@est/directory-data@workspace:packages/directory-data"],
 
     "@est/envelope": ["@est/envelope@workspace:packages/envelope"],
@@ -412,6 +438,10 @@
     "@est/flags": ["@est/flags@workspace:packages/flags"],
 
     "@est/i18n": ["@est/i18n@workspace:packages/i18n"],
+
+    "@est/islands": ["@est/islands@workspace:packages/islands"],
+
+    "@est/math": ["@est/math@workspace:packages/math"],
 
     "@est/money": ["@est/money@workspace:packages/money"],
 
