@@ -1,4 +1,6 @@
 ---
+import { estateLightGraph } from "@est/theme";
+const cssVars = estateLightGraph().toCssVars();
 import AllocationIsland from "../components/AllocationIsland";
 import FlagsIsland from "../components/FlagsIsland";
 import StatusIsland from "../components/StatusIsland";
@@ -35,14 +37,16 @@ import StatusIsland from "../components/StatusIsland";
     <footer>
       <p class="muted">Built with Astro + Solid islands; kits pinned exactly.</p>
     </footer>
+    <style is:global set:html={cssVars} />
     <style is:global>
+      /* estate-light tokens from @est/theme; dark values pending an estate-dark graph */
       :root {
-        --bg: #faf9f5;
-        --fg: #1c1c1a;
-        --muted: #6f6d66;
-        --card: #ffffff;
-        --accent: #3b6ef5;
-        --border: #e4e1d6;
+        --bg: var(--color-surface);
+        --fg: var(--color-on-surface);
+        --muted: var(--color-on-surface-muted);
+        --card: var(--color-surface-raised);
+        --accent: var(--color-accent);
+        --border: var(--color-border);
       }
       @media (prefers-color-scheme: dark) {
         :root {

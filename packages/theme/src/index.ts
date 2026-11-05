@@ -79,6 +79,32 @@ export interface TokenGraph {
   toDtcgJson(): string;
 }
 
+/** The estate-light palette: the dogfood palette used by the deployed
+ * directory and ledger surfaces. Golden-fixture source (conformance/theme). */
+export const ESTATE_LIGHT: Readonly<Record<Role, string>> = {
+  surface: "#faf9f5",
+  "surface-raised": "#ffffff",
+  "on-surface": "#1c1c1a",
+  "on-surface-muted": "#6f6d66",
+  accent: "#3b6ef5",
+  "on-accent": "#ffffff",
+  warn: "#b45309",
+  error: "#c62828",
+  success: "#2e7d32",
+  selection: "#dbeafe",
+  border: "#e4e1d6",
+  "focus-ring": "#93c5fd",
+};
+
+/** Build the estate-light graph in one call. */
+export function estateLightGraph(): TokenGraph {
+  const graph = createTokenGraph("estate-light");
+  for (const [role, hex] of Object.entries(ESTATE_LIGHT)) {
+    graph.setHex(role as Role, hex);
+  }
+  return graph;
+}
+
 /** role -> hex graph; roles() emits in declaration order (THM-009). */
 export function createTokenGraph(name: string): TokenGraph {
   const map = new Map<Role, string>();
