@@ -46,6 +46,16 @@ Cache semantics are deferred to `@est/cachekit` (SC-1: one concern).
 
 ## Phase 2: state + platform services
 
+DONE (2026-11-04): flags, i18n, crdt, otel shipped; fetchkit/flags/i18n/money
+graduated to core via the deployed ledger's pins. Extraction wave 2 also
+shipped: `@est/islands`, `@est/deploy-targets`, `@est/math` (fixture-driven
+extractions from the starlight family; see the Extraction page). `@est/ws`
+stays deferred until an app defines a WS message contract.
+
+Remaining: a flagsd-compatible deployment consuming `@est/flags` at scale
+(the flags-edge worker covers the ledger today), and otel span export once
+an app traces across the wire.
+
 STARTED (2026-11-01):
 
 - `@est/flags` shipped and fixture-pinned: mirrors flagsd's evaluate route
