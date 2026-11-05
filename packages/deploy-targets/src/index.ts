@@ -65,8 +65,8 @@ export function planGithubActionsDeploy(
     "      - run: bun run build",
     "      - uses: cloudflare/wrangler-action@v3",
     "        with:",
-    "          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}",
-    "          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}",
+    "          apiToken: " + "$" + "{{ secrets.CLOUDFLARE_API_TOKEN }}",
+    "          accountId: " + "$" + "{{ secrets.CLOUDFLARE_ACCOUNT_ID }}",
     `          command: pages deploy ${outputDir} --project-name=${projectName} --branch=main`,
   ].join("\n");
   return { path: `.github/workflows/deploy-${projectName}.yml`, yaml };

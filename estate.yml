@@ -309,7 +309,6 @@ consumers:
       "@est/errcode": "0.1.0"
       "@est/fetchkit": "0.1.0"
 
-
 crates:
   search-wasm:
     path: "crates/search-wasm"
