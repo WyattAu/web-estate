@@ -109,10 +109,12 @@ export function createTokenGraph(name: string): TokenGraph {
     roles() {
       // Declaration order, present roles only (mirrors the crate's roles()
       // iteration over Role::ALL).
-      return ROLES.filter((r) => map.has(r)).map((role) => ({
-        role,
-        hex: map.get(role)!,
-      }));
+      const out: { role: Role; hex: string }[] = [];
+      for (const role of ROLES) {
+        const hex = map.get(role);
+        if (hex !== undefined) out.push({ role, hex });
+      }
+      return out;
     },
     toCssVars() {
       let out = ":root {\n";
