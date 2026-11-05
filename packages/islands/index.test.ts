@@ -95,7 +95,8 @@ describe("conformance: islands", () => {
       const result = registry.validate(() => c.file_exists ?? true);
       expect(result.valid).toBe(c.valid);
       if (!c.valid && c.error_contains) {
-        expect(result.errors.some((e) => e.message.includes(c.error_contains!))).toBe(true);
+        const message = c.error_contains;
+        expect(result.errors.some((e) => e.message.includes(message))).toBe(true);
       }
     });
   }
