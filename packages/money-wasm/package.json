@@ -1,0 +1,20 @@
+{
+  "name": "@est/money-wasm",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "wasm twin of @est/money: wraps the published decimal-money crate (compiled to wasm) over a JSON boundary. Version-locked to crates/money-wasm.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@est/money": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.0",
+    "typescript": "^5.9.0"
+  }
+}

@@ -191,6 +191,20 @@ packages:
       status: draft
       last_audit: 2026-11-01
 
+  money-wasm:
+    npm: "@est/money-wasm"
+    version: "0.1.0"
+    area: money
+    status: support
+    mirrors: "money"
+    notes: "wasm-backed allocate/round over a JSON boundary; artifact built by scripts/build-money-wasm.sh, version-locked to crates/money-wasm."
+    docs:
+      tier: k
+      specs: ["packages/money/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: "2026-11-02"
   errcode:
     npm: "@est/errcode"
     version: "0.1.0"
@@ -295,6 +309,7 @@ consumers:
       "@est/errcode": "0.1.0"
       "@est/fetchkit": "0.1.0"
 
+
 crates:
   search-wasm:
     path: "crates/search-wasm"
@@ -306,4 +321,4 @@ crates:
     path: "crates/money-wasm"
     version: "0.1.0"
     notes: "wasm twin of @est/money: wraps the published decimal-money crate (the money estate's own implementation) over a JSON boundary; native cargo test runs the shared money fixture."
-    wrapper: null
+    wrapper: "@est/money-wasm"
