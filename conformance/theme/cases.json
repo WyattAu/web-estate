@@ -1,0 +1,33 @@
+{
+  "suite": "theme",
+  "wire": 1,
+  "source_of_truth": "crates.io theme-kit 0.1.1 (golden fixtures generated from the published crate: theme-dump)",
+  "palette": {
+    "surface": "#faf9f5",
+    "surface-raised": "#ffffff",
+    "on-surface": "#1c1c1a",
+    "on-surface-muted": "#6f6d66",
+    "accent": "#3b6ef5",
+    "on-accent": "#ffffff",
+    "warn": "#b45309",
+    "error": "#c62828",
+    "success": "#2e7d32",
+    "selection": "#dbeafe",
+    "border": "#e4e1d6",
+    "focus-ring": "#93c5fd"
+  },
+  "graph_name": "estate-light",
+  "expected_css": ":root {\n  --color-surface: #faf9f5;\n  --color-surface-raised: #ffffff;\n  --color-on-surface: #1c1c1a;\n  --color-on-surface-muted: #6f6d66;\n  --color-accent: #3b6ef5;\n  --color-on-accent: #ffffff;\n  --color-warn: #b45309;\n  --color-error: #c62828;\n  --color-success: #2e7d32;\n  --color-selection: #dbeafe;\n  --color-border: #e4e1d6;\n  --color-focus-ring: #93c5fd;\n}\n",
+  "normalize_cases": [
+    { "role": "accent", "input": "#3B6EF5", "expected": "#3b6ef5" },
+    { "role": "accent", "input": "3b6ef5", "expected": "#3b6ef5" },
+    { "role": "accent", "input": "#36F", "expected": "#3366ff" },
+    { "role": "accent", "input": "#3b6ef580", "expected": "#3b6ef580" },
+    { "role": "accent", "input": "#zz11", "error": true },
+    { "role": "accent", "input": "#12345", "error": true }
+  ],
+  "missing_role_cases": [
+    { "graph_roles": ["surface"], "resolve": "accent", "throws": true },
+    { "graph_roles": ["surface"], "resolve": "surface", "throws": false }
+  ]
+}
