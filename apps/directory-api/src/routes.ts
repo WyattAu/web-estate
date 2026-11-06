@@ -158,6 +158,7 @@ function isSpanDoc(v: unknown): v is SpanDoc {
 
 export async function respond(req: Request): Promise<Response> {
   const origin = req.headers.get("origin");
+  const incomingTrace = req.headers.get("traceparent");
   const url = new URL(req.url);
 
   if (req.method === "OPTIONS") {
@@ -188,5 +189,5 @@ export async function respond(req: Request): Promise<Response> {
     return envelopeResponse(fail("BadRequest", "method not allowed; GET only"), origin);
   }
   const result = handleApiRequest(url);
-  return envelopeResponse(result, origin);
+  return envelopeResponse(result, origin, incomingTrace);
 }

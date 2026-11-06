@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import cases from "../../conformance/theme/cases.json";
-import { createTokenGraph, InvalidThemeHexError, normalizeHex } from "./src/index";
+import { createTokenGraph, ESTATE_LIGHT, InvalidThemeHexError, normalizeHex } from "./src/index";
 
 type NormalizeCase = { role: string; input: string; expected?: string; error?: boolean };
 
@@ -16,6 +16,10 @@ const suite = cases as unknown as {
 describe("conformance: theme", () => {
   test("fixture suite is theme", () => {
     expect(suite.suite).toBe("theme");
+  });
+
+  test("ESTATE_LIGHT export equals the fixture palette (no drift)", () => {
+    expect(ESTATE_LIGHT).toEqual(suite.palette as unknown as typeof ESTATE_LIGHT);
   });
 
   test("css vars match the crate's emitter output exactly", () => {
