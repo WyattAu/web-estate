@@ -4,6 +4,9 @@
   "workspaces": {
     "": {
       "name": "web-estate",
+      "dependencies": {
+        "@est/content-guard": "0.1.0",
+      },
       "devDependencies": {
         "@biomejs/biome": "2.6.5",
         "@types/bun": "^1.2.0",

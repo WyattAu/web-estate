@@ -16,11 +16,15 @@
     "coverage": "bun test --coverage",
     "contract": "bun run docs:llms && bun run scripts/estate-audit.ts && bun run scripts/check-conformance.ts && bun run scripts/smoke.ts apps/directory/dist/ / /site/townscaper/ /category/dev/ /sitemap-index.xml && bun run scripts/smoke.ts apps/docs/dist/ / /handbook/ /roadmap/",
     "docs:llms": "bun run scripts/llms-txt.ts",
-    "ci": "bun run build && bun run test && bun run lint && bun run fmt-check && bun run coverage && bun run contract"
+    "ci": "bun run build && bun run test && bun run lint && bun run fmt-check && bun run coverage && bun run contract",
+    "content:guard-dir": "bun run scripts/content-guard-cli.ts"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.5",
     "@types/bun": "^1.2.0",
     "yaml": "^2.8.0"
+  },
+  "dependencies": {
+    "@est/content-guard": "0.1.0"
   }
 }
