@@ -4,6 +4,7 @@
 
 import { type SiteRecord, sites } from "@est/directory-data";
 import { type ApiResponse, envelopeError, envelopePaginated } from "@est/envelope";
+import { isValidTraceparent } from "@est/fetchkit/trace";
 import { type ErrorCodeName, errcode } from "@est/errcode";
 import { indexDocs, type SearchDoc } from "@est/search";
 
@@ -29,10 +30,23 @@ export function corsHeaders(origin: string | null): Record<string, string> {
   return base;
 }
 
-function envelopeResponse(result: RouteResult, origin: string | null): Response {
+function envelopeResponse(
+  result: RouteResult,
+  origin: string | null,
+  traceparent?: string | null,
+): Response {
+  const headers: Record<string, string> = {
+    "content-type": "application/json; charset=utf-8",
+    ...corsHeaders(origin),
+  };
+  // W3C response propagation: echo a valid incoming traceparent so the
+  // caller can correlate the server leg of the trace.
+  if (traceparent && isValidTraceparent(traceparent)) {
+    headers["traceparent"] = traceparent;
+  }
   return new Response(JSON.stringify(result.response), {
     status: result.status,
-    headers: { "content-type": "application/json; charset=utf-8", ...corsHeaders(origin) },
+    headers,
   });
 }
 

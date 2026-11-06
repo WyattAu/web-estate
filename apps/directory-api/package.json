@@ -13,6 +13,7 @@
     "@est/directory-data": "0.1.0",
     "@est/envelope": "0.1.0",
     "@est/errcode": "0.1.0",
+    "@est/fetchkit": "0.1.0",
     "@est/search": "0.1.0"
   },
   "devDependencies": {
