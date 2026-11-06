@@ -11,8 +11,6 @@ type WasmGlue = {
   round_json: (value: string, currency: string, places: number, policy: string) => string;
 };
 
-const glue: Promise<WasmGlue> | null = null;
-
 /**
  * Initialize from explicit bytes (recommended in Bun: the glue's default
  * URL fetch does not work there) or let it fetch by URL (browser).

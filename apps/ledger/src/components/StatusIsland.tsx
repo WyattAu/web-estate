@@ -3,6 +3,9 @@
 
 import { errcode } from "@est/errcode";
 import { createFetchKit } from "@est/fetchkit";
+import { generateTraceContext } from "@est/fetchkit/trace";
+import { makeSpan } from "@est/otel";
+import { exportSpans } from "@est/otel/export";
 import { createResource } from "solid-js";
 import { DIRECTORY_API_BASE } from "../lib/flags";
 import { tt } from "../lib/i18n";
@@ -26,9 +29,23 @@ function statusText(loading: boolean, error: unknown, outcome: Outcome | undefin
 
 export default function StatusIsland() {
   const [health] = createResource(async () => {
+    const { traceId, traceparent } = generateTraceContext();
+    const started = Date.now();
     const out = await kit.fetchEnvelopeWithMeta<{ sites: number }>(
       `${DIRECTORY_API_BASE}/api/health`,
+      { headers: { traceparent } },
     );
+    const span = makeSpan(
+      traceId,
+      "GET /api/health",
+      { "http.method": "GET", "url.path": "/api/health" },
+      started,
+      Date.now(),
+    );
+    // Best-effort export; observability never breaks the round trip.
+    void exportSpans([span], {
+      endpoint: `${DIRECTORY_API_BASE}/api/traces`,
+    }).catch(() => {});
     return out;
   });
 

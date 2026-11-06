@@ -137,12 +137,53 @@ export function handleApiRequest(url: URL): RouteResult {
  * Envelope in, envelope out; every failure is an envelope error with the
  * errcode's HTTP status.
  */
+interface SpanDoc {
+  traceId: string;
+  spanId: string;
+  name: string;
+}
+
+function isSpanDoc(v: unknown): v is SpanDoc {
+  if (typeof v !== "object" || v === null) return false;
+  const s = v as Record<string, unknown>;
+  return (
+    typeof s.traceId === "string" &&
+    /^[0-9a-f]{32}$/.test(s.traceId) &&
+    typeof s.spanId === "string" &&
+    /^[0-9a-f]{16}$/.test(s.spanId) &&
+    typeof s.name === "string" &&
+    s.name.length > 0
+  );
+}
+
 export async function respond(req: Request): Promise<Response> {
   const origin = req.headers.get("origin");
   const url = new URL(req.url);
+
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: corsHeaders(origin) });
   }
+
+  // Traces: POST /api/traces with {spans: [{traceId, spanId, name, ...}]}.
+  if (req.method === "POST" && url.pathname.replace(/\/+$/, "") === "/api/traces") {
+    let body: unknown;
+    try {
+      body = await req.json();
+    } catch {
+      return envelopeResponse(fail("BadRequest", "body is not JSON"), origin);
+    }
+    const spans = (body as { spans?: unknown }).spans;
+    if (!Array.isArray(spans) || spans.length === 0) {
+      return envelopeResponse(fail("BadRequest", "spans array is required"), origin);
+    }
+    for (const s of spans) {
+      if (!isSpanDoc(s)) {
+        return envelopeResponse(fail("BadRequest", "invalid span document"), origin);
+      }
+    }
+    return envelopeResponse(ok({ success: true, data: { accepted: spans.length } }), origin);
+  }
+
   if (req.method !== "GET") {
     return envelopeResponse(fail("BadRequest", "method not allowed; GET only"), origin);
   }

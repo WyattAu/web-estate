@@ -1,0 +1,32 @@
+{
+  "suite": "w3c-trace",
+  "wire": 1,
+  "source_of_truth": "W3C Trace Context level 1 (traceparent: version 00, 32-hex nonzero trace-id, 16-hex nonzero span-id, flags 01)",
+  "generate_cases": [
+    { "note": "generated ids are 32/16 lowercase hex and never all-zero", "count": 64 }
+  ],
+  "valid_traceparents": [
+    "00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01",
+    "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01"
+  ],
+  "invalid_traceparents": [
+    {
+      "value": "00-00000000000000000000000000000000-00f067aa0ba902b7-01",
+      "reason": "all-zero trace id"
+    },
+    {
+      "value": "00-4bf92f3577b34da6a3ce929d0e0e4736-0000000000000000-01",
+      "reason": "all-zero span id"
+    },
+    {
+      "value": "ff-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01",
+      "reason": "version ff is forbidden"
+    },
+    { "value": "00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7", "reason": "missing flags" },
+    {
+      "value": "00-4BF92F3577B34DA6A3CE929D0E0E4736-00f067aa0ba902b7-01",
+      "reason": "uppercase hex"
+    },
+    { "value": "not-a-traceparent", "reason": "malformed" }
+  ]
+}
