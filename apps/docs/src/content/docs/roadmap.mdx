@@ -53,8 +53,9 @@ extractions from the starlight family; see the Extraction page). `@est/ws`
 stays deferred until an app defines a WS message contract.
 
 Remaining: a flagsd-compatible deployment consuming `@est/flags` at scale
-(the flags-edge worker covers the ledger today), and otel span export once
-an app traces across the wire.
+(the flags-edge worker covers the ledger today). Span export shipped:
+the ledger emits W3C-traceparent correlations and OTLP-JSON spans to the
+directory-api `POST /api/traces` route (live, CORS-enabled).
 
 STARTED (2026-11-01):
 
