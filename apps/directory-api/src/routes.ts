@@ -19,7 +19,7 @@ const ALLOWED_ORIGINS = new Set([
 
 export function corsHeaders(origin: string | null): Record<string, string> {
   const base: Record<string, string> = {
-    "Access-Control-Allow-Methods": "GET, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Max-Age": "86400",
   };
   if (origin && ALLOWED_ORIGINS.has(origin)) {
