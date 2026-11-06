@@ -91,4 +91,3 @@ export function serializeWsMessage(message: WsMessage): string {
   return JSON.stringify(message);
 }
 
-export type { ServerMessage } from "./client";
