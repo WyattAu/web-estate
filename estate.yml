@@ -31,6 +31,20 @@ owner: WyattAu
 npm_scope: "@est"
 
 packages:
+  ws:
+    npm: "@est/ws"
+    version: "0.1.0"
+    area: conc
+    status: support
+    notes: "Scaffolded by new-kit; replace with a real description."
+    docs:
+      tier: k
+      specs: ["packages/ws/SPEC.md"]
+      truth_table: "AGENTS.md"
+      llms_txt: true
+      status: draft
+      last_audit: 2026-11-06
+
   theme:
     npm: "@est/theme"
     version: "0.1.0"

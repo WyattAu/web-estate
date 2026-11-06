@@ -1,0 +1,45 @@
+{
+  "suite": "ws",
+  "wire": 1,
+  "source_of_truth": "This fixture IS the first WS message contract (authored here per apps-pull); flags-edge + @est/ws both implement it",
+  "client_to_server": [
+    { "type": "subscribe", "flags": ["ledger-beta"] },
+    { "type": "unsubscribe", "flags": ["ledger-beta"] },
+    { "type": "ping" }
+  ],
+  "server_to_client": [
+    { "type": "flag-update", "name": "ledger-beta", "enabled": true },
+    { "type": "pong" },
+    { "type": "hello", "flags": { "ledger-beta": true } }
+  ],
+  "schema_cases": [
+    {
+      "kind": "parse",
+      "wire": "{\"type\":\"subscribe\",\"flags\":[\"a\",\"b\"]}",
+      "valid": true,
+      "decoded": { "type": "subscribe", "flags": ["a", "b"] }
+    },
+    {
+      "kind": "parse",
+      "wire": "{\"type\":\"ping\"}",
+      "valid": true,
+      "decoded": { "type": "ping" }
+    },
+    {
+      "kind": "parse",
+      "wire": "{\"type\":\"flag-update\",\"name\":\"x\",\"enabled\":true}",
+      "valid": true,
+      "decoded": { "type": "flag-update", "name": "x", "enabled": true }
+    },
+    { "kind": "parse", "wire": "{\"type\":\"unknown-kind\"}", "valid": false },
+    { "kind": "parse", "wire": "{\"type\":\"subscribe\"}", "valid": false },
+    { "kind": "parse", "wire": "{\"type\":\"subscribe\",\"flags\":\"not-array\"}", "valid": false },
+    { "kind": "parse", "wire": "not json", "valid": false },
+    { "kind": "parse", "wire": "{}", "valid": false },
+    {
+      "kind": "serialize",
+      "message": { "type": "flag-update", "name": "ledger-beta", "enabled": false },
+      "expected": "{\"type\":\"flag-update\",\"name\":\"ledger-beta\",\"enabled\":false}"
+    }
+  ]
+}
