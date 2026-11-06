@@ -42,7 +42,7 @@ function envelopeResponse(
   // W3C response propagation: echo a valid incoming traceparent so the
   // caller can correlate the server leg of the trace.
   if (traceparent && isValidTraceparent(traceparent)) {
-    headers["traceparent"] = traceparent;
+    headers.traceparent = traceparent;
   }
   return new Response(JSON.stringify(result.response), {
     status: result.status,

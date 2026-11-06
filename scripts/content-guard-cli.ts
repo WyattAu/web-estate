@@ -12,7 +12,7 @@
 //   --exclude <substr>        skip files whose path contains the substring
 //                             (repeatable)
 
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { validateEmDash, validateFrontmatter } from "@est/content-guard";
 
@@ -115,7 +115,5 @@ for (const file of files) {
   }
 }
 
-console.log(
-  `content-guard: ${files.length} files, ${errors} errors, ${warnings} warnings`,
-);
+console.log(`content-guard: ${files.length} files, ${errors} errors, ${warnings} warnings`);
 process.exit(errors > 0 ? 1 : 0);
