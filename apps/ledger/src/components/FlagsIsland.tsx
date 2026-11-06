@@ -13,7 +13,7 @@ export default function FlagsIsland() {
     // flag-update frames from the flags-edge hub bump the decisions live.
     onMount(() => {
       const stream = createFlagStream(
-        DIRECTORY_API_BASE.replace("directory-api", "flags-edge") + "/ws",
+        `${DIRECTORY_API_BASE.replace("directory-api", "flags-edge")}/ws`,
         { onFlagUpdate: () => refetch() },
       );
       onCleanup(() => stream.close());
