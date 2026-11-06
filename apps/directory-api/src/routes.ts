@@ -4,8 +4,8 @@
 
 import { type SiteRecord, sites } from "@est/directory-data";
 import { type ApiResponse, envelopeError, envelopePaginated } from "@est/envelope";
-import { isValidTraceparent } from "@est/fetchkit/trace";
 import { type ErrorCodeName, errcode } from "@est/errcode";
+import { isValidTraceparent } from "@est/fetchkit/trace";
 import { indexDocs, type SearchDoc } from "@est/search";
 
 export interface RouteResult {
