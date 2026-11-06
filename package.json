@@ -19,7 +19,7 @@
     "ci": "bun run build && bun run test && bun run lint && bun run fmt-check && bun run coverage && bun run contract"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.0.0",
+    "@biomejs/biome": "2.6.5",
     "@types/bun": "^1.2.0",
     "yaml": "^2.8.0"
   }

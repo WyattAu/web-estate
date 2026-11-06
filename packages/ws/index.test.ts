@@ -24,9 +24,10 @@ describe("conformance: ws", () => {
   for (const c of suite.schema_cases) {
     if (c.kind === "parse") {
       test(`parse ${c.wire?.slice(0, 40)} -> ${c.valid ? "valid" : "null"}`, () => {
-        const decoded = parseWsMessage(c.wire!) as unknown;
+        const wire = c.wire ?? "";
+        const decoded = parseWsMessage(wire) as unknown;
         if (c.valid) {
-          expect(decoded).toEqual(c.decoded);
+          expect(decoded).toEqual(c.decoded as unknown);
         } else {
           expect(decoded).toBeNull();
         }

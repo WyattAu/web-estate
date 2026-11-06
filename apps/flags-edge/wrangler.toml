@@ -1,3 +1,11 @@
 name = "web-estate-flags-edge"
 main = "src/index.ts"
 compatibility_date = "2026-11-01"
+
+[[durable_objects.bindings]]
+name = "FLAG_HUB"
+class_name = "FlagHubDO"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["FlagHubDO"]

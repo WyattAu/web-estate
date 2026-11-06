@@ -3,8 +3,6 @@
 // message queues; a flag flip enqueues flag-update frames per the
 // conformance/ws contract.
 
-import type { ServerMessage } from "@est/ws";
-
 export class FlagHubCore {
   #flags: Record<string, boolean>;
   /** One serialized-message queue per subscriber id. */

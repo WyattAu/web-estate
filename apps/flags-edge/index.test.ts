@@ -20,7 +20,9 @@ describe("flags-edge hub", () => {
     const hub = new FlagHubCore({ "ledger-beta": true });
     const frames = hub.subscribe("sub-1");
     expect(frames).toHaveLength(1);
-    const parsed = JSON.parse(frames[0]!) as { type: string; flags: Record<string, boolean> };
+    const frame = frames[0];
+    expect(frame).toBeDefined();
+    const parsed = JSON.parse(frame as string) as { type: string; flags: Record<string, boolean> };
     expect(parsed.type).toBe("hello");
     expect(parsed.flags["ledger-beta"]).toBe(true);
   });
