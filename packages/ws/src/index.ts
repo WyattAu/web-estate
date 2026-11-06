@@ -90,3 +90,5 @@ export function parseWsMessage(wire: string): WsMessage | null {
 export function serializeWsMessage(message: WsMessage): string {
   return JSON.stringify(message);
 }
+
+export type { ServerMessage } from "./client";

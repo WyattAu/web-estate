@@ -1,14 +1,23 @@
 // Flags island: the fail-closed flagsd client with the decision source
 // surfaced honestly (source: "default" vs "remote").
 
-import { createResource, For, Show } from "solid-js";
-import { flags } from "../lib/flags";
+import { createFlagStream } from "@est/ws/client";
+import { createResource, For, onCleanup, onMount, Show } from "solid-js";
+import { DIRECTORY_API_BASE, flags } from "../lib/flags";
 import { locale, tt } from "../lib/i18n";
 
 type Decision = { name: string; enabled: boolean; source: string };
 
 export default function FlagsIsland() {
   const [decisions, { refetch }] = createResource(async () => {
+    // flag-update frames from the flags-edge hub bump the decisions live.
+    onMount(() => {
+      const stream = createFlagStream(
+        DIRECTORY_API_BASE.replace("directory-api", "flags-edge") + "/ws",
+        { onFlagUpdate: () => refetch() },
+      );
+      onCleanup(() => stream.close());
+    });
     const samples: { name: string; subject?: { user: string; org: string }; label: string }[] = [
       { name: "ledger-beta", label: "ledger-beta (global)" },
       {
