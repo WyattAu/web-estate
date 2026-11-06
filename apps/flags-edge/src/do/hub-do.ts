@@ -3,7 +3,7 @@
 // handling delegates to FlagHubCore (unit-tested against the contract).
 
 import { DurableObject } from "cloudflare:workers";
-import { FlagHubCore } from "./hub";
+import { FlagHubCore } from "../hub";
 
 export class FlagHubDO extends DurableObject {
   #hub = new FlagHubCore({ "ledger-beta": false });
